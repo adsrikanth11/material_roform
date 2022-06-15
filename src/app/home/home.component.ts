@@ -15,6 +15,16 @@ export class HomeComponent implements OnInit {
   firstFormGroup: any = FormGroup;
   secondFormGroup: any = FormGroup;
   isLinear = false;
+  panelOpenState = true;
+  acc_condition: string = 'No';
+  acc_conditions: string[] = ['Yes', 'No'];
+  myaccessories: string = '';
+  accessories: string[] = ['Case', 'Battery', 'Charger'];
+
+  warranty_condition: string = 'Out of Warranty';
+  warranty_conditions: string[] = ['Warranty', 'Out of Warranty'];
+
+  
   stepperOrientation: Observable<StepperOrientation>;
 
   constructor(breakpointObserver: BreakpointObserver) {

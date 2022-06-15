@@ -2,3 +2,24 @@ input.example-right-align::-webkit-outer-spin-button,
 input.example-right-align::-webkit-inner-spin-button {
   display: none;
 }
+
+.mat-form-field + .mat-form-field {
+  margin-left: 8px;
+}
+
+.mat-expansion-panel-content {
+  padding: 16px 16px!important;
+}
+
+.mat-expansion-panel-header {
+  height: 64px;
+}
+
+.mat-expansion-panel-spacing {
+  margin: 16px 0;
+}
+
+/* .mat-radio-button ~ .mat-radio-button {
+  margin-left: 16px;
+} */
+

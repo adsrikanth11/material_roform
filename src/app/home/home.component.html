@@ -5,6 +5,7 @@
     <mat-step>
 
       <ng-template matStepLabel>Your Product Details</ng-template>
+      <mat-card>
       <div class="mb-3 mt-3">
         <h3>Regardless of whether it is picked up or sent in - shipping and return within Germany are free of charge when using this online order form! The devices will be returned within 3 - 5 days. Simply fill out the online repair order. </h3>
   
@@ -16,24 +17,246 @@
         <h1 class="mat-display my-3">FILL OUT THE PRODUCT DETAILS</h1>
       </div>
       
-      <mat-form-field class="w-25 mx-3">
-        <mat-label>Tool Type Number</mat-label>
-        <input matInput type="number" placeholder="Tool Type Number" class="example-right-align" #input max="10" required>
-        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-        <mat-hint>Max 10 numbers only</mat-hint>
-        <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
-      </mat-form-field>
+      <mat-accordion>
+        <!-- Product 1 -->
+        <mat-expansion-panel class="mb-4">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Product 1:
+            </mat-panel-title>
+            <mat-panel-description>
+              Currently I am {{panelOpenState ? 'open' : 'closed'}}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div class="mt-4 row">
+            <div class="col-md-4">
+              <!-- Tool Type Number -->
+              <mat-form-field class="w-100 ms-2 mb-3">
+                <mat-label>Tool Type Number</mat-label>
+                <input matInput type="number" placeholder="Tool Type Number" class="example-right-align" #input max="10" required>
+                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                <mat-hint>Max 10 numbers only</mat-hint>
+                <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
+              </mat-form-field>
+              <!-- Tool Name -->
+              <mat-form-field class="w-100 mb-3">
+                <mat-label>Tool Name</mat-label>
+                <input matInput type="number" placeholder="Tool Name" class="example-right-align" #input max="10" required>
+                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                <mat-hint>Max 10 numbers only</mat-hint>
+                <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
+              </mat-form-field>
+              <!-- Serial Number -->
+              <mat-form-field class="w-100 mb-3">
+                <mat-label>Serial Number</mat-label>
+                <input matInput type="number" placeholder="Serial Number" class="example-right-align" #input max="10" required>
+                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                <mat-hint>Max 10 numbers only</mat-hint>
+                <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
+              </mat-form-field>
+              <!-- Description -->
+              <mat-form-field class="w-100 mb-3">
+                <mat-label>Description of faults</mat-label>
+                <textarea rows="5" matInput placeholder="Description of faults"></textarea>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <figure class="figure">
+                <img src="assets/tool type number.jpg" class="figure-img img-fluid rounded" alt="...">
+                <h2>Tool type number Ex: 3601JG0100</h2>
+                <ol class="list-group list-group-flush">
+                  <li class="list-group-item">
+                    1. The ten-digit tool type number can be found O on your product or your user manual. e.g.: 3601JG0100 If the tool type number of your device is no longer readable, please enter 9999999999 as a placeholder.
+                  </li>
+                  <li class="list-group-item">
+                    2. Your serial number is shown on your tools data plate. e.g.: 709002180 If the data plate information is worn or unreadable please use dummy number "999".
+                  </li>
+                </ol>
+              </figure>
+            </div>
+            <div class="col-md-4">
+              <figure class="figure">
+                <img src="assets/tool name.jpg" class="figure-img img-fluid rounded" alt="...">
+                <h2>Tool name Ex: GSR 18V-85C</h2>
+                <ol class="list-group list-group-flush">
+                  <li class="list-group-item">
+                    The tool name is written on your tools' housing or your user manual. 
+                  </li>
+                </ol>
+              </figure>
+            </div>
+          </div>
+          
+          <h1 class="mat-display my-4">Would you like to send the accessories?</h1>
+            <mat-radio-group aria-label="Select an option" color="primary" [(ngModel)]="acc_condition">
+              <mat-radio-button class="example-radio-button mx-2" *ngFor="let condition of acc_conditions" [value]="condition">
+                {{condition}}
+              </mat-radio-button>
+            </mat-radio-group>
+          
+          <div *ngIf="acc_condition == 'Yes'" class="mt-4">
+            <div class="row">
+              <div class="col-md-3">
+                <mat-form-field class="w-100">
+                  <mat-label>Choose accessory</mat-label>
+                  <mat-select [(ngModel)]="myaccessories">
+                    <mat-option *ngFor="let accessory of accessories" [value]="accessory">{{accessory}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-2" *ngIf="myaccessories == 'Case'">
+                <mat-form-field class="w-100 mb-2">
+                  <mat-label>Case</mat-label>
+                  <input matInput type="number" placeholder="Case" class="example-right-align" #input max="1" required>
+                  <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                  <mat-hint>Max 10 numbers only</mat-hint>
+                  <mat-hint align="end">{{input.value?.length || 0}}/1</mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col-md-2" *ngIf="myaccessories == 'Case'">
+                <button mat-raised-button color="warn" class="my-3">Delete accessory</button>
+              </div>
+            </div>
+          </div>
 
-      <mat-form-field class="w-25">
-        <mat-label>Tool Name</mat-label>
-        <input matInput type="number" placeholder="Tool Name" class="example-right-align" #input max="10">
-        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-        <mat-hint>Max 10 numbers only</mat-hint>
-        <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
-      </mat-form-field>
-      <div class="mt-4">
-        <button mat-raised-button color="primary" matStepperNext class="float-end">Next</button>
+          <div class="row">
+            <h1 class="mat-display mt-5">Enter repair type of your tool</h1>
+            <h3>Specify the typeof your order.</h3>
+            <mat-radio-group aria-label="Select an option" color="primary" [(ngModel)]="warranty_condition">
+              <mat-radio-button class="example-radio-button mx-2" *ngFor="let condition of warranty_conditions" [value]="condition">
+                {{condition}}
+              </mat-radio-button>
+            </mat-radio-group>
+
+            <div class="mt-4">
+              <!-- Warranty -->
+              <div *ngIf="warranty_condition == 'Warranty'">
+                <h3>
+                  Repairs in case of a warranty claim are free of charge. 
+                  In addition to the warranty conditions the Robert Bosch Power Tools GmbH service conditions apply.
+                </h3>
+                <h1 class="mat-display mt-4">Upload the proof of purchase</h1>
+                <h3>
+                  Simply upload a photo or scan of your proof of purchase in JPG, GIF, PNG, PDF format. 
+                  (Or include a copy of your proof of purchase in your package.) 
+                </h3>
+                <h3>
+                  If you add additional warranty tools, please be sure to attach the corresponding valid proof of purchase. 
+                </h3>
+                <h3>
+                  Before taking photos of the invoice certifying the purchase of Bosch products and under which the end Customer will benefit from the warranty, 
+                  respectively before uploading these invoices in the application, 
+                  it is mandatory to hide/ cover the prices of the products on that invoice, whether they are Bosch products or products 
+                  from other brands purchased from other traders or manufacturers. Bosch does not intend to follow, in any way, 
+                  the prices of any product. 
+                  The invoice is required only for the simple proof of purchasing those tools in order to provide the warranty to the end Customer. 
+                </h3>
+                <!-- Upload image -->
+                <mat-form-field class="w-100 mb-3">
+                  <mat-label>Tool Name</mat-label>
+                  <input type="file" placeholder="Tool Name" class="example-right-align" required>
+                  <mat-hint>Max 10 numbers only</mat-hint>
+                </mat-form-field>
+              </div>
+              <!-- Out of Warranty -->
+              <div *ngIf="warranty_condition == 'Out of Warranty'">
+                <h3>If the repair costs do not exceed HRK 30.00, the repair will be carried out immediately. 
+                  Please indicate the cost limit up to which the repair should be carried out without consultation if the repair costs exceed HRK 30.00.</h3>
+                <h1>Cost Limit</h1>
+                <div class="col-md-4">
+                  <!-- Cost Limit -->
+                  <mat-form-field class="w-100 mb-2">
+                    <mat-label>Cost Limit</mat-label>
+                    <input matInput type="number" placeholder="Cost Limit" class="example-right-align" #input required>
+                  </mat-form-field>
+                </div>
+                <mat-list role="list">
+                  <mat-list-item role="listitem">
+                    1. Only the actual repair costs will be charged. 
+                    If the repair costs exceed the cost limit, you will receive a cost estimate. 
+                    Only if you decide to return your unrepaired and dismantled device will we charge a processing fee of HRK 30.00 including shipping costs. 
+                    If you would like us to dispose of your device, we will charge a processing fee of HRK 30.00.
+                  </mat-list-item><br>
+                  <mat-list-item role="listitem">
+                    2. Payment is made by invoice.
+                  </mat-list-item>
+                  <mat-list-item role="listitem">
+                    3. For further information and conditions, please refer to the current> price list and our> service conditions.
+                  </mat-list-item>
+                  <mat-list-item role="listitem">
+                    4. All prices include VAT.
+                  </mat-list-item>
+                </mat-list>
+              </div>
+            </div>
+          </div>
+        </mat-expansion-panel>
+        <!-- Product 2 -->
+        <mat-expansion-panel class="mb-4">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Product 2:
+            </mat-panel-title>
+            <mat-panel-description>
+              Currently I am {{panelOpenState ? 'open' : 'closed'}}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div class="py-3 px-0">
+            <mat-form-field class="w-25 mx-3">
+              <mat-label>Tool Type Number</mat-label>
+              <input matInput type="number" placeholder="Tool Type Number" class="example-right-align" #input max="10" required>
+              <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+              <mat-hint>Max 10 numbers only</mat-hint>
+              <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
+            </mat-form-field>
+      
+            <mat-form-field class="w-25">
+              <mat-label>Tool Name</mat-label>
+              <input matInput type="number" placeholder="Tool Name" class="example-right-align" #input max="10">
+              <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+              <mat-hint>Max 10 numbers only</mat-hint>
+              <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
+            </mat-form-field>
+          </div>
+          
+        </mat-expansion-panel>
+        <!-- Product 3 -->
+        <mat-expansion-panel class="mb-4">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Product 3:
+            </mat-panel-title>
+            <mat-panel-description>
+              Currently I am {{panelOpenState ? 'open' : 'closed'}}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div class="py-3 px-0">
+            <mat-form-field class="w-25 mx-3">
+              <mat-label>Tool Type Number</mat-label>
+              <input matInput type="number" placeholder="Tool Type Number" class="example-right-align" #input max="10" required>
+              <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+              <mat-hint>Max 10 numbers only</mat-hint>
+              <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
+            </mat-form-field>
+      
+            <mat-form-field class="w-25">
+              <mat-label>Tool Name</mat-label>
+              <input matInput type="number" placeholder="Tool Name" class="example-right-align" #input max="10">
+              <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+              <mat-hint>Max 10 numbers only</mat-hint>
+              <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
+            </mat-form-field>
+          </div>
+          
+        </mat-expansion-panel>
+      </mat-accordion>
+
+      <button mat-raised-button color="primary" class="my-3">Add another tool</button>
+      
+      <div class="mt-4 d-flex justify-content-evenly">
+        <button mat-raised-button color="primary" matStepperNext>Next</button>
       </div>
+    </mat-card>
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Your Personal Details</ng-template>
