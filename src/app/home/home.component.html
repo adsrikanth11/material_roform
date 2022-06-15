@@ -1,1 +1,64 @@
-<p>home works!</p>
+<div class="container">
+  <h1 class="text-center mat-display-3 my-5">ONLINE REPAIR ENQUIRY</h1>
+  
+  <mat-stepper linear [orientation]="(stepperOrientation | async)!" #stepper class="mt-3">
+    <mat-step>
+
+      <ng-template matStepLabel>Your Product Details</ng-template>
+      <div class="mb-3 mt-3">
+        <h3>Regardless of whether it is picked up or sent in - shipping and return within Germany are free of charge when using this online order form! The devices will be returned within 3 - 5 days. Simply fill out the online repair order. </h3>
+  
+        <mat-list role="list">
+          <mat-list-item role="listitem">1. Your copy of the proof of purchase (in case of warranty).</mat-list-item>
+          <mat-list-item role="listitem">2. The device name and type number of your product.</mat-list-item>
+        </mat-list>
+
+        <h1 class="mat-display my-3">FILL OUT THE PRODUCT DETAILS</h1>
+      </div>
+      
+      <mat-form-field class="w-25 mx-3">
+        <mat-label>Tool Type Number</mat-label>
+        <input matInput type="number" placeholder="Tool Type Number" class="example-right-align" #input max="10" required>
+        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+        <mat-hint>Max 10 numbers only</mat-hint>
+        <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field class="w-25">
+        <mat-label>Tool Name</mat-label>
+        <input matInput type="number" placeholder="Tool Name" class="example-right-align" #input max="10">
+        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+        <mat-hint>Max 10 numbers only</mat-hint>
+        <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
+      </mat-form-field>
+      <div class="mt-4">
+        <button mat-raised-button color="primary" matStepperNext class="float-end">Next</button>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Your Personal Details</ng-template>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Confirm Your Details</ng-template>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <p>You are now done.</p>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="stepper.reset()">Reset</button>
+      </div>
+    </mat-step>
+  </mat-stepper>
+  
+</div>
+    
+  
