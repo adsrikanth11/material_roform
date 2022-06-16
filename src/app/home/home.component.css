@@ -51,6 +51,9 @@ input.example-right-align::-webkit-inner-spin-button {
   height: 30px;
 }
 
+.table, th, td {
+  padding: 15px!important;
+}
 
 /* .mat-radio-button ~ .mat-radio-button {
   margin-left: 16px;

@@ -12,17 +12,13 @@ import {map} from 'rxjs/operators';
 })
 export class HomeComponent implements OnInit {
 
-  firstFormGroup: any = FormGroup;
-  secondFormGroup: any = FormGroup;
-  isLinear = false;
+  roform: any = FormGroup;
   panelOpenState = true;
   acc_condition: string = 'No';
-  acc_conditions: string[] = ['Yes', 'No'];
   myaccessories: string = '';
   accessories: string[] = ['Case', 'Battery', 'Charger'];
-
   warranty_condition: string = 'Out of Warranty';
-  warranty_conditions: string[] = ['Warranty', 'Out of Warranty'];
+  logistic_provider: string = 'GLS';
 
   @ViewChild('fileInput')
   fileInput!: ElementRef;
@@ -52,14 +48,19 @@ export class HomeComponent implements OnInit {
   
   stepperOrientation: Observable<StepperOrientation>;
 
-  constructor(breakpointObserver: BreakpointObserver) {
+  constructor(private fb: FormBuilder, breakpointObserver: BreakpointObserver) {
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({matches}) => (matches ? 'horizontal' : 'vertical')));
   }
 
   ngOnInit(): void {
-    
+    this.roform = this.fb.group({
+      tool_type_number: [Validators.required],
+      tool_name: [Validators.required],
+      serial_number: [Validators.required],
+      description: [Validators.required]
+    });
   }
 
 }
