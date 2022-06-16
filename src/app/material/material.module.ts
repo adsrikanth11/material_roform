@@ -11,6 +11,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 const MaterialComponents = [
   MatButtonModule,
@@ -24,7 +25,8 @@ const MaterialComponents = [
   MatCardModule,
   MatGridListModule,
   MatRadioModule,
-  MatSelectModule
+  MatSelectModule,
+  MatToolbarModule
 ];
 
 @NgModule({

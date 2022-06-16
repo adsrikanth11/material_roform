@@ -1,12 +1,12 @@
-<div class="container">
+<div class="container-xl">
   <h1 class="text-center mat-display-3 my-5">ONLINE REPAIR ENQUIRY</h1>
   
   <mat-stepper linear [orientation]="(stepperOrientation | async)!" #stepper class="mt-3">
+    <!-- Step 1 -->
     <mat-step>
-
       <ng-template matStepLabel>Your Product Details</ng-template>
-      <mat-card>
-      <div class="mb-3 mt-3">
+      <!-- Header -->
+      <div class="mb-3 mt-4">
         <h3>Regardless of whether it is picked up or sent in - shipping and return within Germany are free of charge when using this online order form! The devices will be returned within 3 - 5 days. Simply fill out the online repair order. </h3>
   
         <mat-list role="list">
@@ -16,16 +16,16 @@
 
         <h1 class="mat-display my-3">FILL OUT THE PRODUCT DETAILS</h1>
       </div>
-      
+      <!-- Body -->
       <mat-accordion>
         <!-- Product 1 -->
-        <mat-expansion-panel class="mb-4">
+        <mat-expansion-panel class="mb-4" expanded="true">
           <mat-expansion-panel-header>
             <mat-panel-title>
               Product 1:
             </mat-panel-title>
-            <mat-panel-description>
-              Currently I am {{panelOpenState ? 'open' : 'closed'}}
+            <mat-panel-description class="d-flex justify-content-end">
+              <button mat-raised-button color="warn" matStepperNext class="me-5">Delete</button>
             </mat-panel-description>
           </mat-expansion-panel-header>
           <div class="mt-4 row">
@@ -34,7 +34,6 @@
               <mat-form-field class="w-100 ms-2 mb-3">
                 <mat-label>Tool Type Number</mat-label>
                 <input matInput type="number" placeholder="Tool Type Number" class="example-right-align" #input max="10" required>
-                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
                 <mat-hint>Max 10 numbers only</mat-hint>
                 <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
               </mat-form-field>
@@ -42,7 +41,6 @@
               <mat-form-field class="w-100 mb-3">
                 <mat-label>Tool Name</mat-label>
                 <input matInput type="number" placeholder="Tool Name" class="example-right-align" #input max="10" required>
-                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
                 <mat-hint>Max 10 numbers only</mat-hint>
                 <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
               </mat-form-field>
@@ -50,7 +48,6 @@
               <mat-form-field class="w-100 mb-3">
                 <mat-label>Serial Number</mat-label>
                 <input matInput type="number" placeholder="Serial Number" class="example-right-align" #input max="10" required>
-                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
                 <mat-hint>Max 10 numbers only</mat-hint>
                 <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
               </mat-form-field>
@@ -152,10 +149,25 @@
                   The invoice is required only for the simple proof of purchasing those tools in order to provide the warranty to the end Customer. 
                 </h3>
                 <!-- Upload image -->
-                <mat-form-field class="w-100 mb-3">
-                  <mat-label>Tool Name</mat-label>
-                  <input type="file" placeholder="Tool Name" class="example-right-align" required>
-                  <mat-hint>Max 10 numbers only</mat-hint>
+                <mat-form-field>
+                  <div>
+                    <mat-toolbar>
+                      <!-- Display files names -->
+                      <input matInput [(ngModel)]="fileAttr" readonly name="name" />
+                      <!-- Browse Button -->
+                      <button mat-flat-button color="primary">Browse File</button>
+                    </mat-toolbar>
+                    <!-- Fetch selected filed on change -->
+                    <input
+                      type="file"
+                      #fileInput
+                      id="uploadFile"
+                      (change)="uploadFileEvt($event)"
+                      name="uploadFile"
+                      multiple="multiple"
+                      accept="image/*"
+                    />
+                  </div>
                 </mat-form-field>
               </div>
               <!-- Out of Warranty -->
@@ -181,7 +193,7 @@
                     2. Payment is made by invoice.
                   </mat-list-item>
                   <mat-list-item role="listitem">
-                    3. For further information and conditions, please refer to the current> price list and our> service conditions.
+                    3. For further information and conditions, please refer to the current price list and our service conditions.
                   </mat-list-item>
                   <mat-list-item role="listitem">
                     4. All prices include VAT.
@@ -197,8 +209,8 @@
             <mat-panel-title>
               Product 2:
             </mat-panel-title>
-            <mat-panel-description>
-              Currently I am {{panelOpenState ? 'open' : 'closed'}}
+            <mat-panel-description class="d-flex justify-content-end">
+              <button mat-raised-button color="warn" matStepperNext class="me-5">Delete</button>
             </mat-panel-description>
           </mat-expansion-panel-header>
           <div class="py-3 px-0">
@@ -226,8 +238,8 @@
             <mat-panel-title>
               Product 3:
             </mat-panel-title>
-            <mat-panel-description>
-              Currently I am {{panelOpenState ? 'open' : 'closed'}}
+            <mat-panel-description class="d-flex justify-content-end">
+              <button mat-raised-button color="warn" matStepperNext class="me-5">Delete</button>
             </mat-panel-description>
           </mat-expansion-panel-header>
           <div class="py-3 px-0">
@@ -250,21 +262,48 @@
           
         </mat-expansion-panel>
       </mat-accordion>
-
-      <button mat-raised-button color="primary" class="my-3">Add another tool</button>
+      <!-- Bottom -->
+      <div>
+        <button mat-raised-button color="primary" class="mt-1 mb-3 add_another_tool"><mat-icon class="me-3">add</mat-icon><span>Add another tool</span></button>
+        <h3>
+          You can apply for the repair of up to three tools this time. You can click "Add another tool" to input other tool information, 
+          but they need to be of the same service type. If all are warranty or paid repairs, we can create up to three tools for you. Different repair orders.
+        </h3>
+      </div>
       
-      <div class="mt-4 d-flex justify-content-evenly">
+      <div class="mt-3 d-flex justify-content-evenly">
         <button mat-raised-button color="primary" matStepperNext>Next</button>
       </div>
-    </mat-card>
     </mat-step>
+    <!-- Step 2 -->
     <mat-step>
       <ng-template matStepLabel>Your Personal Details</ng-template>
+        <div class="row justify-content-start mt-4">
+          <div class="col-sm-6 col-md-4 col-lg-4">
+            <!-- Tool Type Number -->
+            <mat-form-field class="w-100 mb-3">
+              <mat-label>Tool Type Number</mat-label>
+              <input matInput type="number" placeholder="Tool Type Number" class="example-right-align" #input max="10" required>
+              <mat-hint>Max 10 numbers only</mat-hint>
+              <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6 col-md-4 col-lg-4">
+            <!-- Tool Type Number -->
+            <mat-form-field class="w-100 mb-3">
+              <mat-label>Tool Type Number</mat-label>
+              <input matInput type="number" placeholder="Tool Type Number" class="example-right-align" #input max="10" required>
+              <mat-hint>Max 10 numbers only</mat-hint>
+              <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
+            </mat-form-field>
+          </div>
+        </div>
       <div>
         <button mat-button matStepperPrevious>Back</button>
         <button mat-button matStepperNext>Next</button>
       </div>
     </mat-step>
+    <!-- Step 3 -->
     <mat-step>
       <ng-template matStepLabel>Confirm Your Details</ng-template>
       <div>
@@ -272,6 +311,7 @@
         <button mat-button matStepperNext>Next</button>
       </div>
     </mat-step>
+    <!-- Step 4 -->
     <mat-step>
       <ng-template matStepLabel>Done</ng-template>
       <p>You are now done.</p>
