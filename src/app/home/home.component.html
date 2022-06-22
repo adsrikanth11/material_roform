@@ -393,40 +393,61 @@
                   <mat-panel-description class="d-flex justify-content-end">
                   </mat-panel-description>
                 </mat-expansion-panel-header>
-                <table class="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">First</th>
-                      <th scope="col">Last</th>
-                      <th scope="col">Handle</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">1</th>
-                      <td>Mark</td>
-                      <td>Otto</td>
-                      <td>@mdo</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">2</th>
-                      <td>Jacob</td>
-                      <td>Thornton</td>
-                      <td>@fat</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td colspan="2">Larry the Bird</td>
-                      <td>@twitter</td>
-                    </tr>
-                  </tbody>
-                </table>
+                <mat-list role="list">
+                  <div class="row">
+                    <div class="col-md-3">
+                      <mat-list-item role="listitem">Tool Type Number</mat-list-item>
+                    </div>
+                    <div class="col-md-3">
+                      <mat-list-item role="listitem">{{roform.value.products}}</mat-list-item>
+                    </div>
+                    <div class="col-md-3">
+                      <mat-list-item role="listitem">Tool Name</mat-list-item>
+                    </div>
+                    <div class="col-md-3">
+                      <mat-list-item role="listitem">{{roform.value.tool_name}}</mat-list-item>
+                    </div>
+                    <div class="col-md-3">
+                      <mat-list-item role="listitem">Serial Number</mat-list-item>
+                    </div>
+                    <div class="col-md-3">
+                      <mat-list-item role="listitem">{{roform.value.serial_number}}</mat-list-item>
+                    </div>
+                    <div class="col-md-3">
+                      <mat-list-item role="listitem">Description/Faults</mat-list-item>
+                    </div>
+                    <div class="col-md-3">
+                      <mat-list-item role="listitem">{{roform.value.description}}</mat-list-item>
+                    </div>
+                    <div class="col-md-3">
+                      <mat-list-item role="listitem">Accessories?</mat-list-item>
+                    </div>
+                    <div class="col-md-3">
+                      <mat-list-item role="listitem">{{roform.value.accessories}}</mat-list-item>
+                    </div>
+                    <div class="col-md-3">
+                      <mat-list-item role="listitem">Accessories</mat-list-item>
+                    </div>
+                    <div class="col-md-3">
+                      <mat-list-item role="listitem">{{roform.value.myaccessories}}</mat-list-item>
+                    </div>
+                    <div class="col-md-3">
+                      <mat-list-item role="listitem">Repair Type</mat-list-item>
+                    </div>
+                    <div class="col-md-3">
+                      <mat-list-item role="listitem">{{roform.value.warranty_condition}}</mat-list-item>
+                    </div>
+                    <div class="col-md-3">
+                      <mat-list-item role="listitem">Cost Limit</mat-list-item>
+                    </div>
+                    <div class="col-md-3">
+                      <mat-list-item role="listitem">{{roform.value.cost_limit}}</mat-list-item>
+                    </div>
+                  </div>
+                </mat-list>
               </mat-expansion-panel>
             </div>
-            
           </mat-accordion>
-          <mat-divider></mat-divider>
           <h1 class="mt-4">Personal Details</h1>
           <div class="table-responsive">
             <table class="table table-hover">
@@ -467,8 +488,11 @@
               </tbody>
             </table>
           </div>
-          
-          <mat-divider></mat-divider>
+          <div class="mb-4 mt-4">
+            <h1>TERMS AND CONDITIONS</h1>
+            <h3 *ngIf="roform.value.terms_conditions">I have read and agree to "Terms of Service".</h3>
+            <h3 *ngIf="true">I have read and agree to "Data Protection Notice".</h3>
+          </div>
           <!-- Bottom -->
           <div class="mt-3 mx-5 d-flex justify-content-between">
             <button mat-raised-button color="primary" type="button" matStepperPrevious>Back</button>
