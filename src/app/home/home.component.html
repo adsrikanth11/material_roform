@@ -383,119 +383,48 @@
         <mat-card class="mt-4">
           <h1>Product Details</h1>
           <mat-accordion>
-            <!-- Product 1 -->
-            <mat-expansion-panel class="mb-4" expanded="true">
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  Product 1:
-                </mat-panel-title>
-                <mat-panel-description class="d-flex justify-content-end">
-                </mat-panel-description>
-              </mat-expansion-panel-header>
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                  </tr>
-                </tbody>
-              </table>
-            </mat-expansion-panel>
-            <!-- Product 2 -->
-            <mat-expansion-panel class="mb-4" expanded="true">
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  Product 2:
-                </mat-panel-title>
-                <mat-panel-description class="d-flex justify-content-end">
-                </mat-panel-description>
-              </mat-expansion-panel-header>
-              <mat-list role="list">
-                <div class="row">
-                  <div class="col-md-3">
-                    <mat-list-item role="listitem">Tool Type Number</mat-list-item>
-                  </div>
-                  <div class="col-md-3">
-                    <mat-list-item role="listitem">{{roform.value.products}}</mat-list-item>
-                  </div>
-                  <div class="col-md-3">
-                    <mat-list-item role="listitem">Tool Name</mat-list-item>
-                  </div>
-                  <div class="col-md-3">
-                    <mat-list-item role="listitem">{{roform.value.tool_name}}</mat-list-item>
-                  </div>
-                  <div class="col-md-3">
-                    <mat-list-item role="listitem">Serial Number</mat-list-item>
-                  </div>
-                  <div class="col-md-3">
-                    <mat-list-item role="listitem">{{roform.value.serial_number}}</mat-list-item>
-                  </div>
-                  <div class="col-md-3">
-                    <mat-list-item role="listitem">Description/Faults</mat-list-item>
-                  </div>
-                  <div class="col-md-3">
-                    <mat-list-item role="listitem">{{roform.value.description}}</mat-list-item>
-                  </div>
-                  <div class="col-md-3">
-                    <mat-list-item role="listitem">Accessories?</mat-list-item>
-                  </div>
-                  <div class="col-md-3">
-                    <mat-list-item role="listitem">{{roform.value.accessories}}</mat-list-item>
-                  </div>
-                  <div class="col-md-3">
-                    <mat-list-item role="listitem">Accessories</mat-list-item>
-                  </div>
-                  <div class="col-md-3">
-                    <mat-list-item role="listitem">{{roform.value.myaccessories}}</mat-list-item>
-                  </div>
-                  <div class="col-md-3">
-                    <mat-list-item role="listitem">Repair Type</mat-list-item>
-                  </div>
-                  <div class="col-md-3">
-                    <mat-list-item role="listitem">{{roform.value.warranty_condition}}</mat-list-item>
-                  </div>
-                  <div class="col-md-3">
-                    <mat-list-item role="listitem">Cost Limit</mat-list-item>
-                  </div>
-                  <div class="col-md-3">
-                    <mat-list-item role="listitem">{{roform.value.cost_limit}}</mat-list-item>
-                  </div>
-                </div>
-              </mat-list>
-            </mat-expansion-panel>
-            <!-- Product 3 -->
-            <mat-expansion-panel class="mb-4" expanded="true">
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  Product 3:
-                </mat-panel-title>
-                <mat-panel-description class="d-flex justify-content-end">
-                </mat-panel-description>
-              </mat-expansion-panel-header>
-              Product 3:
-              yuiyuiyuiyiyiyui
-            </mat-expansion-panel>
+            <div *ngFor="let prod of roform.controls.products['controls'] | slice:0:3; let i=index;" [formGroupName]="i">
+              <!-- Product 1 -->
+              <mat-expansion-panel class="mb-4" expanded="true">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Product {{i+1}}:
+                  </mat-panel-title>
+                  <mat-panel-description class="d-flex justify-content-end">
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">First</th>
+                      <th scope="col">Last</th>
+                      <th scope="col">Handle</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>Mark</td>
+                      <td>Otto</td>
+                      <td>@mdo</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2</th>
+                      <td>Jacob</td>
+                      <td>Thornton</td>
+                      <td>@fat</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">3</th>
+                      <td colspan="2">Larry the Bird</td>
+                      <td>@twitter</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </mat-expansion-panel>
+            </div>
+            
           </mat-accordion>
           <mat-divider></mat-divider>
           <h1 class="mt-4">Personal Details</h1>
