@@ -85,7 +85,6 @@ export class HomeComponent implements OnInit {
       ])
     });
     console.log(this.roform.value);
-    console.log(this.roform.value.products.length);
   }
 
   add_product() {
