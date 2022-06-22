@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
+import { FormArray, FormArrayName, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {StepperOrientation} from '@angular/material/stepper';
 import {Observable} from 'rxjs';
@@ -56,11 +56,62 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.roform = this.fb.group({
-      tool_type_number: [Validators.required],
-      tool_name: [Validators.required],
-      serial_number: [Validators.required],
-      description: [Validators.required]
+      title: ['', Validators.required],
+      first_last_name: [''],
+      mobile_number: [],
+      email_address: [''],
+      comapany_name: [''],
+      reference_number: [],
+      vat_id: [],
+      town_name: [''],
+      street_name: [''],
+      house_number: [],
+      postal_code: [],
+      logistic_provider: [''],
+      gls_pickup_date: [],
+      dpd_pickup_date: [],
+      terms_conditions: [],
+      data_protection_notice: [],
+      products: new FormArray([
+        this.fb.group({
+          'tool_type_number': new FormControl('', Validators.required),
+          'tool_name': new FormControl(''),
+          'serial_number': new FormControl(''),
+          'description': new FormControl(''),
+          'accessories': new FormControl(''),
+          'warranty_condition': new FormControl(''),
+          'cost_limit': new FormControl('')
+        })
+      ])
     });
+    console.log(this.roform.value);
+    console.log(this.roform.value.products.length);
   }
 
+  add_product() {
+    let products_array = this.roform.get('products') as FormArray;
+    let add_product = this.fb.group({
+      'tool_type_number': new FormControl(''),
+      'tool_name': new FormControl(''),
+      'serial_number': new FormControl(''),
+      'description': new FormControl(''),
+      'accessories': new FormControl(''),
+      'warranty_condition': new FormControl(''),
+      'cost_limit': new FormControl('')
+    })
+    products_array.push(add_product);
+  }
+
+  del_product(i: any) {
+    let products_array = this.roform.get('products') as FormArray;
+    products_array.removeAt(i);
+  }
+
+  Submit_Roform() {
+    console.log(this.roform.value);
+  }
+
+  resetform() {
+    this.roform.reset();
+  }
 }

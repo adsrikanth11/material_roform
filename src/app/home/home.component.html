@@ -1,7 +1,7 @@
 <div class="container-xl">
-  <h1 class="text-center mat-display-3 my-5">ONLINE REPAIR ENQUIRY</h1>
-  <form [formGroup]="roform">
-    <mat-stepper linear [orientation]="(stepperOrientation | async)!" #stepper class="mt-3">
+  <h1 class="text-center mat-display-3 my-5 title">ONLINE REPAIR ENQUIRY</h1>
+  <form [formGroup]="roform" (ngSubmit)="Submit_Roform()">
+    <mat-stepper  linear [orientation]="(stepperOrientation | async)!" #stepper class="mt-3">
       <!-- Step 1 -->
       <mat-step>
         <ng-template matStepLabel>Your Product Details</ng-template>
@@ -17,255 +17,202 @@
           <h1 class="mat-display my-3">FILL OUT THE PRODUCT DETAILS</h1>
         </div>
         <!-- Body -->
-        <mat-accordion>
-          <!-- Product 1 -->
-          <mat-expansion-panel class="mb-4" expanded="true">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                Product 1:
-              </mat-panel-title>
-              <mat-panel-description class="d-flex justify-content-end">
-                <button mat-raised-button color="warn" class="me-5">Delete</button>
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-  
-            <div class="mt-4 row">
-              <div class="col-md-4">
-                <!-- Tool Type Number -->
-                <mat-form-field class="w-100 ms-2 mb-3">
-                  <mat-label>Tool Type Number</mat-label>
-                  <input matInput type="number" placeholder="Tool Type Number" formControlName="tool_type_number" class="example-right-align" #ttn>
-                  <mat-hint>Max 10 numbers only</mat-hint>
-                  <mat-hint align="end">{{ttn.value?.length || 0}}/10</mat-hint>
-                </mat-form-field>
-                <!-- Tool Name -->
-                <mat-form-field class="w-100 mb-3">
-                  <mat-label>Tool Name</mat-label>
-                  <input matInput type="number" placeholder="Tool Name" formControlName="tool_name" class="example-right-align" #tn>
-                  <mat-hint>Max 10 numbers only</mat-hint>
-                  <mat-hint align="end">{{tn.value?.length || 0}}/10</mat-hint>
-                </mat-form-field>
-                <!-- Serial Number -->
-                <mat-form-field class="w-100 mb-3">
-                  <mat-label>Serial Number</mat-label>
-                  <input matInput type="number" placeholder="Serial Number" formControlName="serial_number" class="example-right-align" #sn>
-                  <mat-hint>Max 10 numbers only</mat-hint>
-                  <mat-hint align="end">{{sn.value?.length || 0}}/10</mat-hint>
-                </mat-form-field>
-                <!-- Description -->
-                <mat-form-field class="w-100 mb-3">
-                  <mat-label>Description of faults</mat-label>
-                  <textarea rows="5" matInput placeholder="Description of faults" formControlName="description" class="example-right-align" #ds></textarea>
-                  <mat-hint align="end">{{ds.value?.length || 0}}/100</mat-hint>
-                  <mat-hint>Max 100 characters only</mat-hint>
-                </mat-form-field>
-              </div>
-              <div class="col-md-4">
-                <figure class="figure">
-                  <img src="assets/tool type number.jpg" class="figure-img img-fluid rounded" alt="...">
-                  <h2>Tool type number Ex: 3601JG0100</h2>
-                  <ol class="list-group list-group-flush">
-                    <li class="list-group-item">
-                      1. The ten-digit tool type number can be found O on your product or your user manual. e.g.: 3601JG0100 If the tool type number of your device is no longer readable, please enter 9999999999 as a placeholder.
-                    </li>
-                    <li class="list-group-item">
-                      2. Your serial number is shown on your tools data plate. e.g.: 709002180 If the data plate information is worn or unreadable please use dummy number "999".
-                    </li>
-                  </ol>
-                </figure>
-              </div>
-              <div class="col-md-4">
-                <figure class="figure">
-                  <img src="assets/tool name.jpg" class="figure-img img-fluid rounded" alt="...">
-                  <h2>Tool name Ex: GSR 18V-85C</h2>
-                  <ol class="list-group list-group-flush">
-                    <li class="list-group-item">
-                      The tool name is written on your tools' housing or your user manual. 
-                    </li>
-                  </ol>
-                </figure>
-              </div>
-            </div>
-  
-            <mat-divider></mat-divider>
-            <h1 class="mat-display my-4">Would you like to send the accessories?</h1>
-            <mat-radio-group aria-label="Select an option" color="primary" [(ngModel)]="acc_condition" [ngModelOptions]="{standalone: true}">
-              <mat-radio-button class="example-radio-button mx-2 mb-4" value="Yes"> Yes </mat-radio-button>
-              <mat-radio-button class="example-radio-button mx-2 mb-4" value="No"> No </mat-radio-button>
-            </mat-radio-group>
-            <div *ngIf="acc_condition === 'Yes'">
-              <div class="row">
-                <div class="col-md-3">
-                  <mat-form-field class="w-100">
-                    <mat-label>Choose accessory</mat-label>
-                    <mat-select [(ngModel)]="myaccessories" [ngModelOptions]="{standalone: true}">
-                      <mat-option *ngFor="let accessory of accessories" [value]="accessory">{{accessory}}</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-                <div class="col-md-2" *ngIf="myaccessories == 'Case'">
-                  <mat-form-field class="w-100 mb-2">
-                    <mat-label>Case</mat-label>
-                    <input matInput type="number" placeholder="Case" class="example-right-align" #input max="1" required>
-                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+        <mat-accordion formArrayName="products">
+          <div *ngFor="let prod of roform.controls.products['controls'] | slice:0:3; let i=index;" [formGroupName]="i">
+            <!-- Product 1 -->
+            <mat-expansion-panel class="mb-4">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Product {{i+1}}:
+                </mat-panel-title>
+                <mat-panel-description class="d-flex justify-content-end">
+                  <div *ngIf="i>0">
+                    <button mat-raised-button color="warn" class="me-5" (click)="del_product(i)">Delete</button>
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+    
+              <div class="mt-4 row">
+                <div class="col-md-4">
+                  <!-- Tool Type Number -->
+                  <mat-form-field class="w-100 ms-2 mb-3">
+                    <mat-label>Tool Type Number</mat-label>
+                    <input matInput type="number" placeholder="Tool Type Number" formControlName="tool_type_number" class="example-right-align" #ttn>
                     <mat-hint>Max 10 numbers only</mat-hint>
-                    <mat-hint align="end">{{input.value?.length || 0}}/1</mat-hint>
+                    <mat-hint align="end">{{ttn.value?.length || 0}}/10</mat-hint>
+                  </mat-form-field>
+                  <!-- Tool Name -->
+                  <mat-form-field class="w-100 mb-3">
+                    <mat-label>Tool Name</mat-label>
+                    <input matInput type="number" placeholder="Tool Name" formControlName="tool_name" class="example-right-align" #tn>
+                    <mat-hint>Max 10 numbers only</mat-hint>
+                    <mat-hint align="end">{{tn.value?.length || 0}}/10</mat-hint>
+                  </mat-form-field>
+                  <!-- Serial Number -->
+                  <mat-form-field class="w-100 mb-3">
+                    <mat-label>Serial Number</mat-label>
+                    <input matInput type="number" placeholder="Serial Number" formControlName="serial_number" class="example-right-align" #sn>
+                    <mat-hint>Max 10 numbers only</mat-hint>
+                    <mat-hint align="end">{{sn.value?.length || 0}}/10</mat-hint>
+                  </mat-form-field>
+                  <!-- Description -->
+                  <mat-form-field class="w-100 mb-3">
+                    <mat-label>Description of faults</mat-label>
+                    <textarea rows="5" matInput placeholder="Description of faults" formControlName="description" class="example-right-align" #ds></textarea>
+                    <mat-hint align="end">{{ds.value?.length || 0}}/200</mat-hint>
+                    <mat-hint>Max 200 characters only</mat-hint>
                   </mat-form-field>
                 </div>
-                <div class="col-md-2" *ngIf="myaccessories == 'Case'">
-                  <button mat-raised-button color="warn" class="my-3">Delete accessory</button>
+                <div class="col-md-4">
+                  <figure class="figure">
+                    <img src="assets/tool type number.jpg" class="figure-img img-fluid rounded" alt="...">
+                    <h2>Tool type number Ex: 3601JG0100</h2>
+                    <ol class="list-group list-group-flush">
+                      <li class="list-group-item">
+                        1. The ten-digit tool type number can be found O on your product or your user manual. e.g.: 3601JG0100 If the tool type number of your device is no longer readable, please enter 9999999999 as a placeholder.
+                      </li>
+                      <li class="list-group-item">
+                        2. Your serial number is shown on your tools data plate. e.g.: 709002180 If the data plate information is worn or unreadable please use dummy number "999".
+                      </li>
+                    </ol>
+                  </figure>
+                </div>
+                <div class="col-md-4">
+                  <figure class="figure">
+                    <img src="assets/tool name.jpg" class="figure-img img-fluid rounded" alt="...">
+                    <h2>Tool name Ex: GSR 18V-85C</h2>
+                    <ol class="list-group list-group-flush">
+                      <li class="list-group-item">
+                        The tool name is written on your tools' housing or your user manual. 
+                      </li>
+                    </ol>
+                  </figure>
                 </div>
               </div>
-            </div>
-  
-            <mat-divider></mat-divider>
-            <div class="row mt-4">
-              <h1 class="mat-display">Enter repair type of your tool</h1>
-              <h3>Specify the typeof your order.</h3>
-              <mat-radio-group aria-label="Select an option" color="primary" [(ngModel)]="warranty_condition" [ngModelOptions]="{standalone: true}">
-                <mat-radio-button class="example-radio-button mx-2" value="Warranty"> Warranty </mat-radio-button>
-                <mat-radio-button class="example-radio-button mx-2" value="Out of Warranty"> Out of Warranty </mat-radio-button>
+    
+              <mat-divider></mat-divider>
+              <h1 class="mat-display my-4">Would you like to send the accessories?</h1>
+              <mat-radio-group aria-label="Select an option" color="primary" formControlName="accessories" [(ngModel)]="acc_condition">
+                <mat-radio-button class="example-radio-button mx-2 mb-4" value="Yes"> Yes </mat-radio-button>
+                <mat-radio-button class="example-radio-button mx-2 mb-4" value="No"> No </mat-radio-button>
               </mat-radio-group>
-              <div class="mt-4">
-                <!-- Warranty -->
-                <div *ngIf="warranty_condition === 'Warranty'">
-                  <h3>
-                    Repairs in case of a warranty claim are free of charge. 
-                    In addition to the warranty conditions the Robert Bosch Power Tools GmbH service conditions apply.
-                  </h3>
-                  <h1 class="mat-display mt-4">Upload the proof of purchase</h1>
-                  <h3>
-                    Simply upload a photo or scan of your proof of purchase in JPG, GIF, PNG, PDF format. 
-                    (Or include a copy of your proof of purchase in your package.) 
-                  </h3>
-                  <h3>
-                    If you add additional warranty tools, please be sure to attach the corresponding valid proof of purchase. 
-                  </h3>
-                  <h3>
-                    Before taking photos of the invoice certifying the purchase of Bosch products and under which the end Customer will benefit from the warranty, 
-                    respectively before uploading these invoices in the application, 
-                    it is mandatory to hide/ cover the prices of the products on that invoice, whether they are Bosch products or products 
-                    from other brands purchased from other traders or manufacturers. Bosch does not intend to follow, in any way, 
-                    the prices of any product. 
-                    The invoice is required only for the simple proof of purchasing those tools in order to provide the warranty to the end Customer. 
-                  </h3>
-                  <!-- Upload image -->
-                  <mat-form-field>
-                    <div>
-                      <mat-toolbar>
-                        <!-- Display files names -->
-                        <input matInput [(ngModel)]="fileAttr" readonly name="name" [ngModelOptions]="{standalone: true}"/>
-                        <!-- Browse Button -->
-                        <button mat-flat-button color="primary">Browse File</button>
-                      </mat-toolbar>
-                      <!-- Fetch selected filed on change -->
-                      <input
-                        type="file"
-                        #fileInput
-                        id="uploadFile"
-                        (change)="uploadFileEvt($event)"
-                        name="uploadFile"
-                        multiple="multiple"
-                        accept="image/*"
-                      />
-                    </div>
-                  </mat-form-field>
-                </div>
-                <!-- Out of Warranty -->
-                <div *ngIf="warranty_condition === 'Out of Warranty'">
-                  <h3>If the repair costs do not exceed HRK 30.00, the repair will be carried out immediately. 
-                    Please indicate the cost limit up to which the repair should be carried out without consultation if the repair costs exceed HRK 30.00.</h3>
-                  <h1>Cost Limit</h1>
-                  <div class="col-md-4">
-                    <!-- Cost Limit -->
-                    <mat-form-field class="w-100 mb-2">
-                      <mat-label>Cost Limit</mat-label>
-                      <input matInput type="number" placeholder="Cost Limit" class="example-right-align" #input required>
+              <div *ngIf="acc_condition === 'Yes'">
+                <div class="row">
+                  <div class="col-md-3">
+                    <mat-form-field class="w-100">
+                      <mat-label>Choose accessory</mat-label>
+                      <mat-select formControlName="myaccessories" [(ngModel)]="myaccessories">
+                        <mat-option *ngFor="let accessory of accessories" [value]="accessory">{{accessory}}</mat-option>
+                      </mat-select>
                     </mat-form-field>
                   </div>
-                  <mat-list role="list">
-                    <mat-list-item role="listitem">
-                      1. Only the actual repair costs will be charged. 
-                      If the repair costs exceed the cost limit, you will receive a cost estimate. 
-                      Only if you decide to return your unrepaired and dismantled device will we charge a processing fee of HRK 30.00 including shipping costs. 
-                      If you would like us to dispose of your device, we will charge a processing fee of HRK 30.00.
-                    </mat-list-item><br>
-                    <mat-list-item role="listitem">
-                      2. Payment is made by invoice.
-                    </mat-list-item>
-                    <mat-list-item role="listitem">
-                      3. For further information and conditions, please refer to the current price list and our service conditions.
-                    </mat-list-item>
-                    <mat-list-item role="listitem">
-                      4. All prices include VAT.
-                    </mat-list-item>
-                  </mat-list>
+                  <div class="col-md-2" *ngIf="myaccessories == 'Case'">
+                    <mat-form-field class="w-100 mb-2">
+                      <mat-label>Case</mat-label>
+                      <input matInput type="number" placeholder="Case" class="example-right-align" #input max="1" required>
+                      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                      <mat-hint>Max 10 numbers only</mat-hint>
+                      <mat-hint align="end">{{input.value?.length || 0}}/1</mat-hint>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-2" *ngIf="myaccessories == 'Case'">
+                    <button mat-raised-button color="warn" class="my-3">Delete accessory</button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </mat-expansion-panel>
-          <!-- Product 2 -->
-          <mat-expansion-panel class="mb-4">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                Product 2:
-              </mat-panel-title>
-              <mat-panel-description class="d-flex justify-content-end">
-                <button mat-raised-button color="warn" class="me-5">Delete</button>
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-            <div class="py-3 px-0">
-              <mat-form-field class="w-25 mx-3">
-                <mat-label>Tool Type Number</mat-label>
-                <input matInput type="number" placeholder="Tool Type Number" class="example-right-align" #input max="10" required>
-                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-                <mat-hint>Max 10 numbers only</mat-hint>
-                <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
-              </mat-form-field>
-        
-              <mat-form-field class="w-25">
-                <mat-label>Tool Name</mat-label>
-                <input matInput type="number" placeholder="Tool Name" class="example-right-align" #input max="10">
-                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-                <mat-hint>Max 10 numbers only</mat-hint>
-                <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
-              </mat-form-field>
-            </div>
+    
+              <mat-divider></mat-divider>
+              <div class="row mt-4">
+                <h1 class="mat-display">Enter repair type of your tool</h1>
+                <h3>Specify the typeof your order.</h3>
+                <mat-radio-group aria-label="Select an option" color="primary" formControlName="warranty_condition" [(ngModel)]="warranty_condition">
+                  <mat-radio-button class="example-radio-button mx-2" value="Warranty"> Warranty </mat-radio-button>
+                  <mat-radio-button class="example-radio-button mx-2" value="Out of Warranty"> Out of Warranty </mat-radio-button>
+                </mat-radio-group>
+                <div class="mt-4">
+                  <!-- Warranty -->
+                  <div *ngIf="warranty_condition === 'Warranty'">
+                    <h3>
+                      Repairs in case of a warranty claim are free of charge. 
+                      In addition to the warranty conditions the Robert Bosch Power Tools GmbH service conditions apply.
+                    </h3>
+                    <h1 class="mat-display mt-4">Upload the proof of purchase</h1>
+                    <h3>
+                      Simply upload a photo or scan of your proof of purchase in JPG, GIF, PNG, PDF format. 
+                      (Or include a copy of your proof of purchase in your package.) 
+                    </h3>
+                    <h3>
+                      If you add additional warranty tools, please be sure to attach the corresponding valid proof of purchase. 
+                    </h3>
+                    <h3>
+                      Before taking photos of the invoice certifying the purchase of Bosch products and under which the end Customer will benefit from the warranty, 
+                      respectively before uploading these invoices in the application, 
+                      it is mandatory to hide/ cover the prices of the products on that invoice, whether they are Bosch products or products 
+                      from other brands purchased from other traders or manufacturers. Bosch does not intend to follow, in any way, 
+                      the prices of any product. 
+                      The invoice is required only for the simple proof of purchasing those tools in order to provide the warranty to the end Customer. 
+                    </h3>
+                    <!-- Upload image -->
+                    <mat-form-field>
+                      <div>
+                        <mat-toolbar>
+                          <!-- Display files names -->
+                          <input matInput [(ngModel)]="fileAttr" readonly name="name" [ngModelOptions]="{standalone: true}"/>
+                          <!-- Browse Button -->
+                          <button mat-flat-button color="primary">Browse File</button>
+                        </mat-toolbar>
+                        <!-- Fetch selected filed on change -->
+                        <input
+                          type="file"
+                          #fileInput
+                          id="uploadFile"
+                          (change)="uploadFileEvt($event)"
+                          name="uploadFile"
+                          multiple="multiple"
+                          accept="image/*"
+                        />
+                      </div>
+                    </mat-form-field>
+                  </div>
+                  <!-- Out of Warranty -->
+                  <div *ngIf="warranty_condition === 'Out of Warranty'">
+                    <h3>If the repair costs do not exceed HRK 30.00, the repair will be carried out immediately. 
+                      Please indicate the cost limit up to which the repair should be carried out without consultation if the repair costs exceed HRK 30.00.</h3>
+                    <h1>Cost Limit</h1>
+                    <div class="col-md-4">
+                      <!-- Cost Limit -->
+                      <mat-form-field class="w-100 mb-2">
+                        <mat-label>Cost Limit</mat-label>
+                        <input matInput type="number" formControlName="cost_limit" placeholder="Cost Limit" class="example-right-align" required>
+                      </mat-form-field>
+                    </div>
+                    <mat-list role="list">
+                      <mat-list-item role="listitem">
+                        1. Only the actual repair costs will be charged. 
+                        If the repair costs exceed the cost limit, you will receive a cost estimate. 
+                        Only if you decide to return your unrepaired and dismantled device will we charge a processing fee of HRK 30.00 including shipping costs. 
+                        If you would like us to dispose of your device, we will charge a processing fee of HRK 30.00.
+                      </mat-list-item><br>
+                      <mat-list-item role="listitem">
+                        2. Payment is made by invoice.
+                      </mat-list-item>
+                      <mat-list-item role="listitem">
+                        3. For further information and conditions, please refer to the current price list and our service conditions.
+                      </mat-list-item>
+                      <mat-list-item role="listitem">
+                        4. All prices include VAT.
+                      </mat-list-item>
+                    </mat-list>
+                  </div>
+                </div>
+              </div>
+            </mat-expansion-panel>
             
-          </mat-expansion-panel>
-          <!-- Product 3 -->
-          <mat-expansion-panel class="mb-4">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                Product 3:
-              </mat-panel-title>
-              <mat-panel-description class="d-flex justify-content-end">
-                <button mat-raised-button color="warn" class="me-5">Delete</button>
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-            <div class="py-3 px-0">
-              <mat-form-field class="w-25 mx-3">
-                <mat-label>Tool Type Number</mat-label>
-                <input matInput type="number" placeholder="Tool Type Number" class="example-right-align" #input max="10" required>
-                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-                <mat-hint>Max 10 numbers only</mat-hint>
-                <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
-              </mat-form-field>
-        
-              <mat-form-field class="w-25">
-                <mat-label>Tool Name</mat-label>
-                <input matInput type="number" placeholder="Tool Name" class="example-right-align" #input max="10">
-                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-                <mat-hint>Max 10 numbers only</mat-hint>
-                <mat-hint align="end">{{input.value?.length || 0}}/10</mat-hint>
-              </mat-form-field>
-            </div>
-            
-          </mat-expansion-panel>
+          </div>
         </mat-accordion>
         <!-- Bottom -->
-        <div>
-          <button mat-raised-button color="primary" class="mt-1 mb-3 add_another_tool"><mat-icon class="me-3">add</mat-icon><span>Add another tool</span></button>
+        <div >
+          <button mat-raised-button color="primary" class="mt-1 mb-3 add_another_tool" (click)="add_product()"><mat-icon class="me-3">add</mat-icon><span>Add another tool</span></button>
           <h3>
             You can apply for the repair of up to three tools this time. You can click "Add another tool" to input other tool information, 
             but they need to be of the same service type. If all are warranty or paid repairs, we can create up to three tools for you. Different repair orders.
@@ -286,7 +233,7 @@
               <!-- Choose Title -->
               <mat-form-field class="w-100 mb-3">
                 <mat-label>Choose Title</mat-label>
-                <mat-select required>
+                <mat-select formControlName="title">
                   <mat-option value="Mr">Mr</mat-option>
                   <mat-option value="Mrs">Mrs</mat-option>
                 </mat-select>
@@ -296,7 +243,7 @@
               <!-- First and Last name -->
               <mat-form-field class="w-100 mb-3">
                 <mat-label>First and Last name</mat-label>
-                <input matInput type="text" placeholder="First and Last name" class="example-right-align" #flname minlength="3" maxlength="25" required>
+                <input matInput type="text" formControlName="first_last_name" placeholder="First and Last name" class="example-right-align" #flname minlength="3" maxlength="25" required>
                 <mat-hint>Min 3 and Max 25 charaters only</mat-hint>
                 <mat-hint align="end">{{flname.value?.length || 0}}/25</mat-hint>
               </mat-form-field>
@@ -305,7 +252,7 @@
               <!-- Mobile number -->
               <mat-form-field class="w-100 mb-3">
                 <mat-label>Mobile number</mat-label>
-                <input matInput type="number" placeholder="Mobile number" class="example-right-align" #mn min="10" max="10" required>
+                <input matInput type="number" formControlName="mobile_number" placeholder="Mobile number" class="example-right-align" #mn required>
                 <mat-hint>Min 10 and Max 10 numbers only</mat-hint>
                 <mat-hint align="end">{{mn.value?.length || 0}}/10</mat-hint>
               </mat-form-field>
@@ -314,7 +261,7 @@
               <!-- E-mail address -->
               <mat-form-field class="w-100 mb-3">
                 <mat-label>E-mail address</mat-label>
-                <input matInput type="text" placeholder="E-mail address" class="example-right-align" #ea minlength="5" maxlength="25" required>
+                <input matInput type="text" formControlName="email_address" placeholder="E-mail address" class="example-right-align" #ea minlength="5" maxlength="25" required>
                 <mat-hint>Min 5 and Max 25 charaters only</mat-hint>
                 <mat-hint align="end">{{ea.value?.length || 0}}/25</mat-hint>
               </mat-form-field>
@@ -325,7 +272,7 @@
               <!-- Company name -->
               <mat-form-field class="w-100 mb-3">
                 <mat-label>Company name</mat-label>
-                <input matInput type="text" placeholder="Company name" class="example-right-align" #cm minlength="3" maxlength="25">
+                <input matInput type="text" formControlName="comapany_name" placeholder="Company name" class="example-right-align" #cm minlength="3" maxlength="25">
                 <mat-hint>Min 3 and Max 25 charaters only</mat-hint>
                 <mat-hint align="end">{{cm.value?.length || 0}}/25</mat-hint>
               </mat-form-field>
@@ -334,7 +281,7 @@
               <!-- Reference number -->
               <mat-form-field class="w-100 mb-3">
                 <mat-label>Reference number</mat-label>
-                <input matInput type="number" placeholder="Reference number" class="example-right-align" #rn minlength="10" maxlength="25">
+                <input matInput type="number" formControlName="reference_number" placeholder="Reference number" class="example-right-align" #rn minlength="10" maxlength="25">
                 <mat-hint>Min 10 and Max 25 numbers only</mat-hint>
                 <mat-hint align="end">{{rn.value?.length || 0}}/25</mat-hint>
               </mat-form-field>
@@ -343,7 +290,7 @@
               <!-- VAT ID -->
               <mat-form-field class="w-100 mb-3">
                 <mat-label>VAT ID</mat-label>
-                <input matInput type="text" placeholder="VAT ID" class="example-right-align" #vi minlength="10" maxlength="25">
+                <input matInput type="text" formControlName="vat_id" placeholder="VAT ID" class="example-right-align" #vi minlength="10" maxlength="25">
                 <mat-hint>Min 10 and Max 25 numbers only</mat-hint>
                 <mat-hint align="end">{{vi.value?.length || 0}}/25</mat-hint>
               </mat-form-field>
@@ -354,7 +301,7 @@
               <!-- Town name -->
               <mat-form-field class="w-100 mb-3">
                 <mat-label>Town name</mat-label>
-                <input matInput type="text" placeholder="Town name" class="example-right-align" #twn minlength="3" maxlength="25" required>
+                <input matInput type="text" formControlName="town_name" placeholder="Town name" class="example-right-align" #twn minlength="3" maxlength="25" required>
                 <mat-hint>Min 3 and Max 25 charaters only</mat-hint>
                 <mat-hint align="end">{{twn.value?.length || 0}}/25</mat-hint>
               </mat-form-field>
@@ -363,7 +310,7 @@
               <!-- Street name -->
               <mat-form-field class="w-100 mb-3">
                 <mat-label>Street name</mat-label>
-                <input matInput type="text" placeholder="Street name" class="example-right-align" #stn minlength="3" maxlength="25" required>
+                <input matInput type="text" formControlName="street_name" placeholder="Street name" class="example-right-align" #stn minlength="3" maxlength="25" required>
                 <mat-hint>Min 3 and Max 25 charaters only</mat-hint>
                 <mat-hint align="end">{{stn.value?.length || 0}}/25</mat-hint>
               </mat-form-field>
@@ -372,7 +319,7 @@
               <!-- House number -->
               <mat-form-field class="w-100 mb-3">
                 <mat-label>House number</mat-label>
-                <input matInput type="number" placeholder="House number" class="example-right-align" #hn minlength="10" maxlength="25" required>
+                <input matInput type="number" formControlName="house_number" placeholder="House number" class="example-right-align" #hn minlength="10" maxlength="25" required>
                 <mat-hint>Min 10 and Max 25 numbers only</mat-hint>
                 <mat-hint align="end">{{hn.value?.length || 0}}/25</mat-hint>
               </mat-form-field>
@@ -381,7 +328,7 @@
               <!-- Postal Code -->
               <mat-form-field class="w-100 mb-3">
                 <mat-label>Postal Code</mat-label>
-                <input matInput type="number" placeholder="Postal Code" class="example-right-align" #pc minlength="10" maxlength="25" required>
+                <input matInput type="number" formControlName="postal_code" placeholder="Postal Code" class="example-right-align" #pc minlength="10" maxlength="25" required>
                 <mat-hint>Min 10 and Max 25 numbers only</mat-hint>
                 <mat-hint align="end">{{pc.value?.length || 0}}/25</mat-hint>
               </mat-form-field>
@@ -389,7 +336,7 @@
             <mat-divider class="mt-2 mb-4"></mat-divider>
             <h1>SELECT YOUR DELIVERY OPTION</h1>
             <H3>Select logistic provider</H3>
-            <mat-radio-group aria-label="Select an option" color="primary" [(ngModel)]="logistic_provider" [ngModelOptions]="{standalone: true}">
+            <mat-radio-group aria-label="Select an option" color="primary" formControlName="logistic_provider" [(ngModel)]="logistic_provider">
               <mat-radio-button class="example-radio-button mx-2 mb-4" value="GLS"> GLS </mat-radio-button>
               <mat-radio-button class="example-radio-button mx-2 mb-4" value="DPD"> DPD </mat-radio-button>
             </mat-radio-group>
@@ -397,7 +344,7 @@
               <div *ngIf="logistic_provider === 'GLS'">
                 <mat-form-field>
                   <mat-label>Select pick-up date</mat-label>
-                  <input matInput [matDatepicker]="picker">
+                  <input matInput [matDatepicker]="picker" formControlName="gls_pickup_date">
                   <mat-hint>MM/DD/YYYY</mat-hint>
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker #picker></mat-datepicker>
@@ -406,7 +353,7 @@
               <div *ngIf="logistic_provider === 'DPD'">
                 <mat-form-field>
                   <mat-label>Select pick-up date</mat-label>
-                  <input matInput [matDatepicker]="picker">
+                  <input matInput [matDatepicker]="picker" formControlName="dpd_pickup_date">
                   <mat-hint>MM/DD/YYYY</mat-hint>
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker #picker></mat-datepicker>
@@ -417,8 +364,8 @@
             <div class="mb-4">
               <h1>TERMS AND CONDITIONS</h1>
               <section class="example-section">
-                <mat-checkbox color="primary">I have read and agree to "Terms of Service".</mat-checkbox><br><br>
-                <mat-checkbox color="primary">I have read and agree to "Data Protection Notice".</mat-checkbox>
+                <mat-checkbox color="primary" value="true" formControlName="terms_conditions">I have read and agree to "Terms of Service".</mat-checkbox><br><br>
+                <mat-checkbox color="primary" value="true" formControlName="data_protection_notice">I have read and agree to "Data Protection Notice".</mat-checkbox>
               </section>
             </div>
           </div>
@@ -490,7 +437,7 @@
                     <mat-list-item role="listitem">Tool Type Number</mat-list-item>
                   </div>
                   <div class="col-md-3">
-                    <mat-list-item role="listitem">{{roform.value.tool_type_number}}</mat-list-item>
+                    <mat-list-item role="listitem">{{roform.value.products}}</mat-list-item>
                   </div>
                   <div class="col-md-3">
                     <mat-list-item role="listitem">Tool Name</mat-list-item>
@@ -511,10 +458,28 @@
                     <mat-list-item role="listitem">{{roform.value.description}}</mat-list-item>
                   </div>
                   <div class="col-md-3">
+                    <mat-list-item role="listitem">Accessories?</mat-list-item>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-list-item role="listitem">{{roform.value.accessories}}</mat-list-item>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-list-item role="listitem">Accessories</mat-list-item>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-list-item role="listitem">{{roform.value.myaccessories}}</mat-list-item>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-list-item role="listitem">Repair Type</mat-list-item>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-list-item role="listitem">{{roform.value.warranty_condition}}</mat-list-item>
+                  </div>
+                  <div class="col-md-3">
                     <mat-list-item role="listitem">Cost Limit</mat-list-item>
                   </div>
                   <div class="col-md-3">
-                    <mat-list-item role="listitem">{{roform.value}}</mat-list-item>
+                    <mat-list-item role="listitem">{{roform.value.cost_limit}}</mat-list-item>
                   </div>
                 </div>
               </mat-list>
@@ -539,36 +504,36 @@
               <tbody>
                 <tr>
                   <td>Title</td>
-                  <td>Mr.</td>
+                  <td>{{roform.value.title}}</td>
                   <td>First and Last name</td>
-                  <td>Ambla Dhage Srikanth</td>
+                  <td>{{roform.value.first_last_name}}</td>
                 <tr>
                   <td>Mobile Number</td>
-                  <td>9182707720</td>
+                  <td>{{roform.value.mobile_number}}</td>
                   <td>E-mail Address</td>
-                  <td>srikanth@gmail.com</td>
+                  <td>{{roform.value.email_address}}</td>
                 </tr>
                 <tr>
                   <td>Company Name</td>
-                  <td>My Company name</td>
+                  <td>{{roform.value.comapany_name}}</td>
                   <td>Reference Number</td>
-                  <td>1234567890</td>
+                  <td>{{roform.value.reference_number}}</td>
                 </tr>
                 <tr>
                   <td>VAT ID</td>
-                  <td>9874563210</td>
+                  <td>{{roform.value.vat_id}}</td>
                   <td>Town Name</td>
-                  <td>Adoni</td>
+                  <td>{{roform.value.town_name}}</td>
                 </tr>
                 <tr>
                   <td>Street Name</td>
-                  <td>SBI Colony</td>
+                  <td>{{roform.value.street_name}}</td>
                   <td>House Number</td>
-                  <td>#45</td>
+                  <td>{{roform.value.house_number}}</td>
                 </tr>
                 <tr>
                   <td>Postal Code</td>
-                  <td>518302</td>
+                  <td>{{roform.value.postal_code}}</td>
                 </tr>
               </tbody>
             </table>
@@ -578,7 +543,8 @@
           <!-- Bottom -->
           <div class="mt-3 mx-5 d-flex justify-content-between">
             <button mat-raised-button color="primary" type="button" matStepperPrevious>Back</button>
-            <button mat-raised-button color="primary" type="button" matStepperNext>Next</button>
+            <button mat-raised-button color="primary" type="reset" (click)="stepper.reset()">Reset</button>
+            <button mat-raised-button color="primary" type="submit" matStepperNext>Next</button>
           </div>
         </mat-card>
       </mat-step>
@@ -587,10 +553,10 @@
         <ng-template matStepLabel>Done</ng-template>
         {{roform.value | json}}
         <p>You are now done.</p>
-        <div>
+        <!-- <div>
           <button mat-button type="button" matStepperPrevious>Back</button>
-          <button mat-button (click)="stepper.reset()">Reset</button>
-        </div>
+          <button mat-button type="button" (click)="resetform()">Reset</button>
+        </div> -->
       </mat-step>
     </mat-stepper>
   </form>
