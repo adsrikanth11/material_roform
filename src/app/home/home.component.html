@@ -489,9 +489,9 @@
             </table>
           </div>
           <div class="mb-4 mt-4">
-            <h1>TERMS AND CONDITIONS</h1>
+            <h1 *ngIf="roform.value.terms_conditions || roform.value.data_protection_notice">TERMS AND CONDITIONS</h1>
             <h3 *ngIf="roform.value.terms_conditions">I have read and agree to "Terms of Service".</h3>
-            <h3 *ngIf="true">I have read and agree to "Data Protection Notice".</h3>
+            <h3 *ngIf="roform.value.data_protection_notice">I have read and agree to "Data Protection Notice".</h3>
           </div>
           <!-- Bottom -->
           <div class="mt-3 mx-5 d-flex justify-content-between">
