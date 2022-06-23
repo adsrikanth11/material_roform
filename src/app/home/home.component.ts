@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
   accessories: string[] = ['Case', 'Battery', 'Charger'];
   warranty_condition: string = 'Out of Warranty';
   logistic_provider: string = 'GLS';
-
+  urls: any = [];
   @ViewChild('fileInput')
   fileInput!: ElementRef;
   fileAttr = 'Choose File';
@@ -34,6 +34,7 @@ export class HomeComponent implements OnInit {
       reader.onload = (e: any) => {
         let image = new Image();
         image.src = e.target.result;
+        this.urls.push(e.target.result);
         image.onload = (rs) => {
           let imgBase64Path = e.target.result;
         };
@@ -85,6 +86,37 @@ export class HomeComponent implements OnInit {
       ])
     });
     console.log(this.roform.value);
+  }
+
+  uploadfile(event: any) {
+    const files = event.target.files;
+    this.fileAttr = '';
+      Array.from(event.target.files).forEach((file: any) => {
+        this.fileAttr += file.name + ' - ';
+      });
+    for (let index = 0; index < files.length; index++) {
+      const element = files[index];
+      console.log(element.name);
+
+      let reader = new FileReader();
+
+      reader.readAsDataURL(files[index]);
+
+      reader.onload = (e: any) => {
+        let image = new Image();
+        image.src = e.target.result;
+        image.onload = (rs) => {
+          let imgBase64Path = e.target.result;
+        };
+        this.urls.push(e.target.result);
+        console.log(this.urls);
+      }
+    }
+  }
+
+  remove_img(url: any) {
+    console.log(url);
+    this.urls.splice(url);
   }
 
   add_product() {

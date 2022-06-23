@@ -166,13 +166,15 @@
                           type="file"
                           #fileInput
                           id="uploadFile"
-                          (change)="uploadFileEvt($event)"
+                          (change)="uploadfile($event)"
                           name="uploadFile"
                           multiple="multiple"
                           accept="image/*"
                         />
                       </div>
                     </mat-form-field>
+                    <!-- <input type="file" id="upload" name="upload" multiple (change)="uploadfile($event)"> -->
+                    <img *ngFor="let url of urls let i=index" [src]="url" [title]="i+1" width="200px" (click)="remove_img(i)">
                   </div>
                   <!-- Out of Warranty -->
                   <div *ngIf="warranty_condition === 'Out of Warranty'">
