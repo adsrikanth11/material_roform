@@ -16,8 +16,11 @@ export class HomeComponent implements OnInit {
   panelOpenState = true;
   acc_condition: string = 'No';
   myaccessories: string = '';
-  accessories: string[] = ['Case', 'Battery', 'Charger'];
-  warranty_condition: string = 'Out of Warranty';
+  accessories = ['', 'case', 'battery', 'charger'];
+  case: boolean = false;
+  battery: boolean = false;
+  charger: boolean = false;
+  repair_type: string = 'Out of Warranty';
   logistic_provider: string = 'GLS';
   urls: any = [];
   @ViewChild('fileInput')
@@ -79,8 +82,22 @@ export class HomeComponent implements OnInit {
           'tool_name': new FormControl(''),
           'serial_number': new FormControl(''),
           'description': new FormControl(''),
-          'accessories': new FormControl(''),
-          'warranty_condition': new FormControl(''),
+          'acc_condition': new FormControl(''),
+          'myaccessories': new FormArray([
+            this.fb.group({
+              'Case': new FormControl(''),
+              'case_quantity': new FormControl('')
+            }),
+            this.fb.group({
+              'Battery': new FormControl(''),
+              'battery_quantity': new FormControl('')
+            }),
+            this.fb.group({
+              'Charger': new FormControl(''),
+              'charger_quantity': new FormControl('')
+            }),
+          ]),
+          'repair_type': new FormControl(''),
           'cost_limit': new FormControl('')
         })
       ])
@@ -122,13 +139,27 @@ export class HomeComponent implements OnInit {
   add_product() {
     let products_array = this.roform.get('products') as FormArray;
     let add_product = this.fb.group({
-      'tool_type_number': new FormControl(''),
-      'tool_name': new FormControl(''),
-      'serial_number': new FormControl(''),
-      'description': new FormControl(''),
-      'accessories': new FormControl(''),
-      'warranty_condition': new FormControl(''),
-      'cost_limit': new FormControl('')
+      'tool_type_number': '',
+      'tool_name': '',
+      'serial_number': '',
+      'description': '',
+      'acc_condition': '',
+      'myaccessories': [
+        {
+          'Case': '',
+          'case_quantity': ''
+        },
+        {
+          'Battery': '',
+          'battery_quantity': ''
+        },
+        {
+          'Charger': '',
+          'charger_quantity': ''
+        },
+      ],
+      'repair_type': '',
+      'cost_limit': ''
     })
     products_array.push(add_product);
   }

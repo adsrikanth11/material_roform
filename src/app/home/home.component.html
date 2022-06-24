@@ -1,7 +1,7 @@
 <div class="container-xl">
   <h1 class="text-center mat-display-3 my-5 title">ONLINE REPAIR ENQUIRY</h1>
   <form [formGroup]="roform" (ngSubmit)="Submit_Roform()">
-    <mat-stepper  linear [orientation]="(stepperOrientation | async)!" #stepper class="mt-3">
+    <mat-stepper linear [orientation]="(stepperOrientation | async)!" #stepper class="mt-3">
       <!-- Step 1 -->
       <mat-step>
         <ng-template matStepLabel>Your Product Details</ng-template>
@@ -19,7 +19,7 @@
         <!-- Body -->
         <mat-accordion formArrayName="products">
           <div *ngFor="let prod of roform.controls.products['controls'] | slice:0:3; let i=index;" [formGroupName]="i">
-            <!-- Product 1 -->
+            <!-- Products -->
             <mat-expansion-panel class="mb-4">
               <mat-expansion-panel-header>
                 <mat-panel-title>
@@ -32,40 +32,32 @@
                 </mat-panel-description>
               </mat-expansion-panel-header>
     
-              <div class="mt-4 row">
+              <div class="row mt-4">
                 <div class="col-md-4">
                   <!-- Tool Type Number -->
                   <mat-form-field class="w-100 ms-2 mb-3">
                     <mat-label>Tool Type Number</mat-label>
-                    <input matInput type="number" placeholder="Tool Type Number" formControlName="tool_type_number" class="example-right-align" #ttn>
-                    <mat-hint>Max 10 numbers only</mat-hint>
-                    <mat-hint align="end">{{ttn.value?.length || 0}}/10</mat-hint>
+                    <input matInput type="number" placeholder="Tool Type Number" formControlName="tool_type_number" class="example-right-align">
                   </mat-form-field>
                   <!-- Tool Name -->
                   <mat-form-field class="w-100 mb-3">
                     <mat-label>Tool Name</mat-label>
-                    <input matInput type="number" placeholder="Tool Name" formControlName="tool_name" class="example-right-align" #tn>
-                    <mat-hint>Max 10 numbers only</mat-hint>
-                    <mat-hint align="end">{{tn.value?.length || 0}}/10</mat-hint>
+                    <input matInput type="number" placeholder="Tool Name" formControlName="tool_name" class="example-right-align">
                   </mat-form-field>
                   <!-- Serial Number -->
                   <mat-form-field class="w-100 mb-3">
                     <mat-label>Serial Number</mat-label>
-                    <input matInput type="number" placeholder="Serial Number" formControlName="serial_number" class="example-right-align" #sn>
-                    <mat-hint>Max 10 numbers only</mat-hint>
-                    <mat-hint align="end">{{sn.value?.length || 0}}/10</mat-hint>
+                    <input matInput type="number" placeholder="Serial Number" formControlName="serial_number" class="example-right-align">
                   </mat-form-field>
                   <!-- Description -->
                   <mat-form-field class="w-100 mb-3">
                     <mat-label>Description of faults</mat-label>
-                    <textarea rows="5" matInput placeholder="Description of faults" formControlName="description" class="example-right-align" #ds></textarea>
-                    <mat-hint align="end">{{ds.value?.length || 0}}/200</mat-hint>
-                    <mat-hint>Max 200 characters only</mat-hint>
+                    <textarea rows="5" matInput placeholder="Description of faults" formControlName="description" class="example-right-align"></textarea>
                   </mat-form-field>
                 </div>
                 <div class="col-md-4">
                   <figure class="figure">
-                    <img src="assets/tool type number.jpg" class="figure-img img-fluid rounded" alt="...">
+                    <img src="assets/tool type number.jpg" class="figure-img img-fluid rounded" alt="Tool type number">
                     <h2>Tool type number Ex: 3601JG0100</h2>
                     <ol class="list-group list-group-flush">
                       <li class="list-group-item">
@@ -79,7 +71,7 @@
                 </div>
                 <div class="col-md-4">
                   <figure class="figure">
-                    <img src="assets/tool name.jpg" class="figure-img img-fluid rounded" alt="...">
+                    <img src="assets/tool name.jpg" class="figure-img img-fluid rounded" alt="Tool name">
                     <h2>Tool name Ex: GSR 18V-85C</h2>
                     <ol class="list-group list-group-flush">
                       <li class="list-group-item">
@@ -91,47 +83,82 @@
               </div>
     
               <mat-divider></mat-divider>
-              <h1 class="mat-display my-4">Would you like to send the accessories?</h1>
-              <mat-radio-group aria-label="Select an option" color="primary" formControlName="accessories" [(ngModel)]="acc_condition">
-                <mat-radio-button class="example-radio-button mx-2 mb-4" value="Yes"> Yes </mat-radio-button>
-                <mat-radio-button class="example-radio-button mx-2 mb-4" value="No"> No </mat-radio-button>
-              </mat-radio-group>
-              <div *ngIf="acc_condition === 'Yes'">
-                <div class="row">
-                  <div class="col-md-3">
-                    <mat-form-field class="w-100">
-                      <mat-label>Choose accessory</mat-label>
-                      <mat-select formControlName="myaccessories" [(ngModel)]="myaccessories">
-                        <mat-option *ngFor="let accessory of accessories" [value]="accessory">{{accessory}}</mat-option>
-                      </mat-select>
-                    </mat-form-field>
+
+              <div>
+                <h1 class="mat-display">Would you like to send the accessories?</h1>
+                <mat-radio-group aria-label="Select an option" color="primary" formControlName="acc_condition" [(ngModel)]="acc_condition">
+                  <mat-radio-button class="example-radio-button mx-2" value="Yes">Yes</mat-radio-button>
+                  <mat-radio-button class="example-radio-button mx-2" value="No">No</mat-radio-button>
+                </mat-radio-group>
+                <div class="mt-4">
+                  <!-- {{acc_condition}} -->
+                  <!-- Yes -->
+                  <div *ngIf="acc_condition == 'Yes'">
+                    <div class="row mt-4">
+                      <div class="col-md-2">
+                        <div>
+                          <mat-checkbox formControlName="case" [(ngModel)]="case" color="primary" class="me-3 mb-3">Case</mat-checkbox>
+                          <mat-form-field class="w-100 mb-2">
+                            <mat-label>Case Quantity</mat-label>
+                            <input matInput type="number" placeholder="Quantity" formControlName="case_quantity">
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div>
+                          <mat-checkbox formControlName="battery" [(ngModel)]="battery" color="primary" class="me-3 mb-3">Battery</mat-checkbox>
+                          <mat-form-field class="w-100 mb-2">
+                            <mat-label>Battery Quantity</mat-label>
+                            <input matInput type="number" placeholder="Quantity" formControlName="battery_quantity">
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div>
+                          <mat-checkbox formControlName="charger" [(ngModel)]="battery" color="primary" class="mb-3">Charger</mat-checkbox>
+                          <mat-form-field class="w-100 mb-2">
+                            <mat-label>Charger Quantity</mat-label>
+                            <input matInput type="number" placeholder="Quantity" formControlName="charger_quantity">
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- <div class="col-md-2" *ngIf="myaccessories === 'case'">
+                      <mat-form-field class="w-100 mb-2">
+                        <mat-label>Case</mat-label>
+                        <input matInput type="number" placeholder="Case" formControlName="case_quantity">
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-2" *ngIf="myaccessories === 'battery'">
+                      <mat-form-field class="w-100 mb-2">
+                        <mat-label>Battery</mat-label>
+                        <input matInput type="number" placeholder="Battery" formControlName="battery_quantity">
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-2" *ngIf="myaccessories === 'charger'">
+                      <mat-form-field class="w-100 mb-2">
+                        <mat-label>Charger</mat-label>
+                        <input matInput type="number" placeholder="Charger" formControlName="charger_quantity">
+                      </mat-form-field>
+                    </div> -->
                   </div>
-                  <div class="col-md-2" *ngIf="myaccessories == 'Case'">
-                    <mat-form-field class="w-100 mb-2">
-                      <mat-label>Case</mat-label>
-                      <input matInput type="number" placeholder="Case" class="example-right-align" #input max="1" required>
-                      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-                      <mat-hint>Max 10 numbers only</mat-hint>
-                      <mat-hint align="end">{{input.value?.length || 0}}/1</mat-hint>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-2" *ngIf="myaccessories == 'Case'">
-                    <button mat-raised-button color="warn" class="my-3">Delete accessory</button>
-                  </div>
+                  <!-- No -->
+                  <div *ngIf="acc_condition == 'No'"></div>
                 </div>
               </div>
     
               <mat-divider></mat-divider>
+
               <div class="row mt-4">
                 <h1 class="mat-display">Enter repair type of your tool</h1>
                 <h3>Specify the typeof your order.</h3>
-                <mat-radio-group aria-label="Select an option" color="primary" formControlName="warranty_condition" [(ngModel)]="warranty_condition">
-                  <mat-radio-button class="example-radio-button mx-2" value="Warranty"> Warranty </mat-radio-button>
-                  <mat-radio-button class="example-radio-button mx-2" value="Out of Warranty"> Out of Warranty </mat-radio-button>
+                <mat-radio-group aria-label="Select an option" color="primary" formControlName="repair_type" [(ngModel)]="repair_type">
+                  <mat-radio-button class="example-radio-button mx-2" value="Warranty">Warranty</mat-radio-button>
+                  <mat-radio-button class="example-radio-button mx-2" value="Out of Warranty">Out of Warranty</mat-radio-button>
                 </mat-radio-group>
                 <div class="mt-4">
                   <!-- Warranty -->
-                  <div *ngIf="warranty_condition === 'Warranty'">
+                  <div *ngIf="repair_type === 'Warranty'">
                     <h3>
                       Repairs in case of a warranty claim are free of charge. 
                       In addition to the warranty conditions the Robert Bosch Power Tools GmbH service conditions apply.
@@ -152,32 +179,29 @@
                       the prices of any product. 
                       The invoice is required only for the simple proof of purchasing those tools in order to provide the warranty to the end Customer. 
                     </h3>
-                    <!-- Upload image -->
+                      <!-- Upload image -->
                     <mat-form-field>
-                      <div>
-                        <mat-toolbar>
-                          <!-- Display files names -->
-                          <input matInput [(ngModel)]="fileAttr" readonly name="name" [ngModelOptions]="{standalone: true}"/>
-                          <!-- Browse Button -->
-                          <button mat-flat-button color="primary">Browse File</button>
-                        </mat-toolbar>
-                        <!-- Fetch selected filed on change -->
-                        <input
-                          type="file"
-                          #fileInput
-                          id="uploadFile"
-                          (change)="uploadfile($event)"
-                          name="uploadFile"
-                          multiple="multiple"
-                          accept="image/*"
-                        />
+                      <div class="row">
+                        <div class="col-md-3">
+                            <!-- Display files names -->
+                            <input matInput readonly name="name"/>
+                            <!-- Browse Button -->
+                            <button mat-flat-button color="primary">Browse File</button>
+                          <!-- Fetch selected filed on change -->
+                          <input type="file" #fileInput id="uploadFile" (change)="uploadfile($event)" name="uploadFile" multiple="multiple" accept="image/*"/>
+                        </div>
+                        <div class="col-md-2" *ngFor="let url of urls let i=index">
+                          <figure class="figure">
+                            <img [src]="url" (click)="remove_img(i)" class="figure-img img-fluid rounded">
+                          </figure>
+                        </div>
                       </div>
                     </mat-form-field>
-                    <!-- <input type="file" id="upload" name="upload" multiple (change)="uploadfile($event)"> -->
-                    <img *ngFor="let url of urls let i=index" [src]="url" [title]="i+1" width="200px" (click)="remove_img(i)">
+                        <!-- <input type="file" id="upload" name="upload" multiple (change)="uploadfile($event)"> -->
+                        <!-- <img *ngFor="let url of urls let i=index" [src]="url" [title]="i+1" width="200px" (click)="remove_img(i)"> -->
                   </div>
                   <!-- Out of Warranty -->
-                  <div *ngIf="warranty_condition === 'Out of Warranty'">
+                  <div *ngIf="repair_type === 'Out of Warranty'">
                     <h3>If the repair costs do not exceed HRK 30.00, the repair will be carried out immediately. 
                       Please indicate the cost limit up to which the repair should be carried out without consultation if the repair costs exceed HRK 30.00.</h3>
                     <h1>Cost Limit</h1>
@@ -208,12 +232,13 @@
                   </div>
                 </div>
               </div>
+
             </mat-expansion-panel>
             
           </div>
         </mat-accordion>
         <!-- Bottom -->
-        <div >
+        <div>
           <button mat-raised-button color="primary" class="mt-1 mb-3 add_another_tool" (click)="add_product()"><mat-icon class="me-3">add</mat-icon><span>Add another tool</span></button>
           <h3>
             You can apply for the repair of up to three tools this time. You can click "Add another tool" to input other tool information, 
@@ -399,21 +424,21 @@
                   <div class="col-md-6">
                     <div class="table-responsive">
                       <table class="table table-hover">
-                        <tbody *ngFor="let prods of roform.products; let ii=index;">
+                        <tbody>
                           <tr>
                             <td>Tool Type Number</td>
                             <td>{{roform.value.products[i].tool_type_number}}</td>
                           </tr>
                           <tr>
                             <td>Tool Name</td>
-                            <td>{{roform.value.products.tool_name}}</td>
+                            <td>{{roform.value.products[i].tool_name}}</td>
                           <tr>
                             <td>Serial Number</td>
-                            <td>{{roform.products.serial_number}}</td>
+                            <td>{{roform.value.products[i].serial_number}}</td>
                           </tr>
                           <tr>
                             <td>Description/Faults</td>
-                            <td>{{prods.email_address}}</td>
+                            <td>{{roform.value.products[i].description}}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -422,21 +447,21 @@
                   <div class="col-md-6">
                     <div class="table-responsive">
                       <table class="table table-hover">
-                        <tbody *ngFor="let prod of roform.value.products let iii=index;">
+                        <tbody>
                           <tr>
                             <td>Accessories?</td>
-                            <td>{{prod.accessories}}</td>
+                            <td>{{roform.value.products[i].acc_condition}}</td>
                           </tr>
                           <tr>
                             <td>Accessories</td>
-                            <td>{{prod.accessories}}</td>
+                            <td>{{roform.value.products[i].myaccessories}}</td>
                           </tr>
                           <tr>
                             <td>Repair Type</td>
-                            <td>{{prod.warranty_condition}}</td>
+                            <td>{{roform.value.products[i].repair_type}}</td>
                           <tr>
                             <td>Cost Limit</td>
-                            <td>{{roform.cost_limit}}</td>
+                            <td>{{roform.value.products[i].cost_limit}}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -556,12 +581,8 @@
       <!-- Step 4 -->
       <mat-step>
         <ng-template matStepLabel>Done</ng-template>
+        <!-- <p class="mb-5">You are now done.</p> -->
         {{roform.value | json}}
-        <p>You are now done.</p>
-        <!-- <div>
-          <button mat-button type="button" matStepperPrevious>Back</button>
-          <button mat-button type="button" (click)="resetform()">Reset</button>
-        </div> -->
       </mat-step>
     </mat-stepper>
   </form>
