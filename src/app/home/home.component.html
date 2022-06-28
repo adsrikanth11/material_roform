@@ -17,229 +17,200 @@
           <h1 class="mat-display my-3">FILL OUT THE PRODUCT DETAILS</h1>
         </div>
         <!-- Body -->
-        <mat-accordion formArrayName="products">
-          <div *ngFor="let prod of roform.controls.products['controls'] | slice:0:3; let i=index;" [formGroupName]="i">
-            <!-- Products -->
-            <mat-expansion-panel class="mb-4">
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  Product {{i+1}}:
-                </mat-panel-title>
-                <mat-panel-description class="d-flex justify-content-end">
-                  <div *ngIf="i>0">
-                    <button mat-raised-button color="warn" class="me-5" (click)="del_product(i)">Delete</button>
+        <mat-accordion>
+          <div formArrayName="products">
+            <div *ngFor="let prod of roform.controls.products['controls'] let i=index;" [formGroupName]="i">
+              <mat-expansion-panel class="my-4">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      Product {{i+1}}
+                    </mat-panel-title>
+                    <mat-panel-description class="d-flex justify-content-end" *ngIf="i>0">
+                        <button mat-raised-button color="warn" class="me-5" (click)="del_product(i)">Delete</button>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="row my-4">
+                  <div class="col-md-4">
+                    <!-- Tool Type Number -->
+                    <mat-form-field class="w-100 ms-2 mb-3">
+                      <mat-label>Tool Type Number</mat-label>
+                      <input matInput type="number" placeholder="Tool Type Number" formControlName="tool_type_number" class="example-right-align">
+                    </mat-form-field>
+                    <!-- Tool Name -->
+                    <mat-form-field class="w-100 mb-3">
+                      <mat-label>Tool Name</mat-label>
+                      <input matInput type="number" placeholder="Tool Name" formControlName="tool_name" class="example-right-align">
+                    </mat-form-field>
+                    <!-- Serial Number -->
+                    <mat-form-field class="w-100 mb-3">
+                      <mat-label>Serial Number</mat-label>
+                      <input matInput type="number" placeholder="Serial Number" formControlName="serial_number" class="example-right-align">
+                    </mat-form-field>
+                    <!-- Description -->
+                    <mat-form-field class="w-100 mb-3">
+                      <mat-label>Description of faults</mat-label>
+                      <textarea rows="5" matInput placeholder="Description of faults" formControlName="description" class="example-right-align"></textarea>
+                    </mat-form-field>
                   </div>
-                </mat-panel-description>
-              </mat-expansion-panel-header>
-    
-              <div class="row mt-4">
-                <div class="col-md-4">
-                  <!-- Tool Type Number -->
-                  <mat-form-field class="w-100 ms-2 mb-3">
-                    <mat-label>Tool Type Number</mat-label>
-                    <input matInput type="number" placeholder="Tool Type Number" formControlName="tool_type_number" class="example-right-align">
-                  </mat-form-field>
-                  <!-- Tool Name -->
-                  <mat-form-field class="w-100 mb-3">
-                    <mat-label>Tool Name</mat-label>
-                    <input matInput type="number" placeholder="Tool Name" formControlName="tool_name" class="example-right-align">
-                  </mat-form-field>
-                  <!-- Serial Number -->
-                  <mat-form-field class="w-100 mb-3">
-                    <mat-label>Serial Number</mat-label>
-                    <input matInput type="number" placeholder="Serial Number" formControlName="serial_number" class="example-right-align">
-                  </mat-form-field>
-                  <!-- Description -->
-                  <mat-form-field class="w-100 mb-3">
-                    <mat-label>Description of faults</mat-label>
-                    <textarea rows="5" matInput placeholder="Description of faults" formControlName="description" class="example-right-align"></textarea>
-                  </mat-form-field>
+                  <div class="col-md-4">
+                    <figure class="figure">
+                      <img src="assets/tool type number.jpg" class="figure-img img-fluid rounded" alt="Tool type number">
+                      <h2>Tool type number Ex: 3601JG0100</h2>
+                      <ol class="list-group list-group-flush">
+                        <li class="list-group-item">
+                          1. The ten-digit tool type number can be found O on your product or your user manual. e.g.: 3601JG0100 If the tool type number of your device is no longer readable, please enter 9999999999 as a placeholder.
+                        </li>
+                        <li class="list-group-item">
+                          2. Your serial number is shown on your tools data plate. e.g.: 709002180 If the data plate information is worn or unreadable please use dummy number "999".
+                        </li>
+                      </ol>
+                    </figure>
+                  </div>
+                  <div class="col-md-4">
+                    <figure class="figure">
+                      <img src="assets/tool name.jpg" class="figure-img img-fluid rounded" alt="Tool name">
+                      <h2>Tool name Ex: GSR 18V-85C</h2>
+                      <ol class="list-group list-group-flush">
+                        <li class="list-group-item">
+                          The tool name is written on your tools' housing or your user manual. 
+                        </li>
+                      </ol>
+                    </figure>
+                  </div>
                 </div>
-                <div class="col-md-4">
-                  <figure class="figure">
-                    <img src="assets/tool type number.jpg" class="figure-img img-fluid rounded" alt="Tool type number">
-                    <h2>Tool type number Ex: 3601JG0100</h2>
-                    <ol class="list-group list-group-flush">
-                      <li class="list-group-item">
-                        1. The ten-digit tool type number can be found O on your product or your user manual. e.g.: 3601JG0100 If the tool type number of your device is no longer readable, please enter 9999999999 as a placeholder.
-                      </li>
-                      <li class="list-group-item">
-                        2. Your serial number is shown on your tools data plate. e.g.: 709002180 If the data plate information is worn or unreadable please use dummy number "999".
-                      </li>
-                    </ol>
-                  </figure>
-                </div>
-                <div class="col-md-4">
-                  <figure class="figure">
-                    <img src="assets/tool name.jpg" class="figure-img img-fluid rounded" alt="Tool name">
-                    <h2>Tool name Ex: GSR 18V-85C</h2>
-                    <ol class="list-group list-group-flush">
-                      <li class="list-group-item">
-                        The tool name is written on your tools' housing or your user manual. 
-                      </li>
-                    </ol>
-                  </figure>
-                </div>
-              </div>
-    
-              <mat-divider></mat-divider>
-
-              <div>
-                <h1 class="mat-display">Would you like to send the accessories?</h1>
-                <mat-radio-group aria-label="Select an option" color="primary" formControlName="acc_condition" [(ngModel)]="acc_condition">
-                  <mat-radio-button class="example-radio-button mx-2" value="Yes">Yes</mat-radio-button>
-                  <mat-radio-button class="example-radio-button mx-2" value="No">No</mat-radio-button>
-                </mat-radio-group>
-                <div class="mt-4">
-                  <!-- {{acc_condition}} -->
-                  <!-- Yes -->
-                  <div *ngIf="acc_condition == 'Yes'">
-                    <div class="row mt-4">
-                      <div class="col-md-2">
-                        <div>
-                          <mat-checkbox formControlName="case" [(ngModel)]="case" color="primary" class="me-3 mb-3">Case</mat-checkbox>
-                          <mat-form-field class="w-100 mb-2">
+      
+                <mat-divider class="my-4"></mat-divider>
+  
+                <div>
+                  <h1 class="mat-display">Would you like to send the accessories?</h1>
+                  <mat-radio-group aria-label="Select an option" color="primary" formControlName="acc_condition" [(ngModel)]="acc_conditions">
+                    <mat-radio-button class="example-radio-button mx-2" value="Yes" name="acc_condition">Yes</mat-radio-button>
+                    <mat-radio-button class="example-radio-button mx-2" value="No" name="acc_condition">No</mat-radio-button>
+                  </mat-radio-group>
+                  <div *ngIf="acc_conditions === 'Yes'">
+                    <div class="row mt-4 ms-2" formArrayName="myaccessories">
+                      <!-- <div *ngFor="let prod of roform.controls.products.controls.myaccessories let i=index;" [formGroupName]="i"> -->
+                        <div class="col-md-2">
+                          <mat-checkbox formControlName="case" #case color="primary" class="me-3 mb-3">Case</mat-checkbox>
+                          <mat-form-field *ngIf="case.checked" class="w-100 mb-2">
                             <mat-label>Case Quantity</mat-label>
                             <input matInput type="number" placeholder="Quantity" formControlName="case_quantity">
                           </mat-form-field>
                         </div>
-                      </div>
-                      <div class="col-md-2">
-                        <div>
-                          <mat-checkbox formControlName="battery" [(ngModel)]="battery" color="primary" class="me-3 mb-3">Battery</mat-checkbox>
-                          <mat-form-field class="w-100 mb-2">
+                        <div class="col-md-2">
+                          <mat-checkbox formControlName="battery" #battery color="primary" class="me-3 mb-3">Battery</mat-checkbox>
+                          <mat-form-field *ngIf="battery.checked" class="w-100 mb-2">
                             <mat-label>Battery Quantity</mat-label>
                             <input matInput type="number" placeholder="Quantity" formControlName="battery_quantity">
                           </mat-form-field>
                         </div>
-                      </div>
-                      <div class="col-md-2">
-                        <div>
-                          <mat-checkbox formControlName="charger" [(ngModel)]="battery" color="primary" class="mb-3">Charger</mat-checkbox>
-                          <mat-form-field class="w-100 mb-2">
+                        <div class="col-md-2">
+                          <mat-checkbox formControlName="charger" #charger color="primary" class="mb-3">Charger</mat-checkbox>
+                          <mat-form-field *ngIf="charger.checked" class="w-100 mb-2">
                             <mat-label>Charger Quantity</mat-label>
                             <input matInput type="number" placeholder="Quantity" formControlName="charger_quantity">
                           </mat-form-field>
                         </div>
-                      </div>
+                      <!-- </div> -->
                     </div>
-                    <!-- <div class="col-md-2" *ngIf="myaccessories === 'case'">
-                      <mat-form-field class="w-100 mb-2">
-                        <mat-label>Case</mat-label>
-                        <input matInput type="number" placeholder="Case" formControlName="case_quantity">
-                      </mat-form-field>
-                    </div>
-                    <div class="col-md-2" *ngIf="myaccessories === 'battery'">
-                      <mat-form-field class="w-100 mb-2">
-                        <mat-label>Battery</mat-label>
-                        <input matInput type="number" placeholder="Battery" formControlName="battery_quantity">
-                      </mat-form-field>
-                    </div>
-                    <div class="col-md-2" *ngIf="myaccessories === 'charger'">
-                      <mat-form-field class="w-100 mb-2">
-                        <mat-label>Charger</mat-label>
-                        <input matInput type="number" placeholder="Charger" formControlName="charger_quantity">
-                      </mat-form-field>
-                    </div> -->
                   </div>
-                  <!-- No -->
-                  <div *ngIf="acc_condition == 'No'"></div>
                 </div>
-              </div>
+                
+                <mat-divider></mat-divider>
     
-              <mat-divider></mat-divider>
-
-              <div class="row mt-4">
-                <h1 class="mat-display">Enter repair type of your tool</h1>
-                <h3>Specify the typeof your order.</h3>
-                <mat-radio-group aria-label="Select an option" color="primary" formControlName="repair_type" [(ngModel)]="repair_type">
-                  <mat-radio-button class="example-radio-button mx-2" value="Warranty">Warranty</mat-radio-button>
-                  <mat-radio-button class="example-radio-button mx-2" value="Out of Warranty">Out of Warranty</mat-radio-button>
-                </mat-radio-group>
-                <div class="mt-4">
-                  <!-- Warranty -->
-                  <div *ngIf="repair_type === 'Warranty'">
-                    <h3>
-                      Repairs in case of a warranty claim are free of charge. 
-                      In addition to the warranty conditions the Robert Bosch Power Tools GmbH service conditions apply.
-                    </h3>
-                    <h1 class="mat-display mt-4">Upload the proof of purchase</h1>
-                    <h3>
-                      Simply upload a photo or scan of your proof of purchase in JPG, GIF, PNG, PDF format. 
-                      (Or include a copy of your proof of purchase in your package.) 
-                    </h3>
-                    <h3>
-                      If you add additional warranty tools, please be sure to attach the corresponding valid proof of purchase. 
-                    </h3>
-                    <h3>
-                      Before taking photos of the invoice certifying the purchase of Bosch products and under which the end Customer will benefit from the warranty, 
-                      respectively before uploading these invoices in the application, 
-                      it is mandatory to hide/ cover the prices of the products on that invoice, whether they are Bosch products or products 
-                      from other brands purchased from other traders or manufacturers. Bosch does not intend to follow, in any way, 
-                      the prices of any product. 
-                      The invoice is required only for the simple proof of purchasing those tools in order to provide the warranty to the end Customer. 
-                    </h3>
-                      <!-- Upload image -->
-                    <mat-form-field>
-                      <div class="row">
-                        <div class="col-md-3">
-                            <!-- Display files names -->
-                            <input matInput readonly name="name"/>
-                            <!-- Browse Button -->
-                            <button mat-flat-button color="primary">Browse File</button>
-                          <!-- Fetch selected filed on change -->
-                          <input type="file" #fileInput id="uploadFile" (change)="uploadfile($event)" name="uploadFile" multiple="multiple" accept="image/*"/>
+                <div class="row mt-4">
+                  <h1 class="mat-display">Enter repair type of your tool</h1>
+                  <h3>Specify the typeof your order.</h3>
+                  <mat-radio-group aria-label="Select an option" color="primary" formControlName="repair_type" [(ngModel)]="repair_type">
+                    <mat-radio-button class="example-radio-button mx-2" value="Warranty">Warranty</mat-radio-button>
+                    <mat-radio-button class="example-radio-button mx-2" value="Out of Warranty">Out of Warranty</mat-radio-button>
+                  </mat-radio-group>
+                  <div class="mt-4">
+                    <!-- Warranty -->
+                    <div *ngIf="repair_type === 'Warranty'">
+                      <h3>
+                        Repairs in case of a warranty claim are free of charge. 
+                        In addition to the warranty conditions the Robert Bosch Power Tools GmbH service conditions apply.
+                      </h3>
+                      <h1 class="mat-display mt-4">Upload the proof of purchase</h1>
+                      <h3>
+                        Simply upload a photo or scan of your proof of purchase in JPG, GIF, PNG, PDF format. 
+                        (Or include a copy of your proof of purchase in your package.) 
+                      </h3>
+                      <h3>
+                        If you add additional warranty tools, please be sure to attach the corresponding valid proof of purchase. 
+                      </h3>
+                      <h3>
+                        Before taking photos of the invoice certifying the purchase of Bosch products and under which the end Customer will benefit from the warranty, 
+                        respectively before uploading these invoices in the application, 
+                        it is mandatory to hide/ cover the prices of the products on that invoice, whether they are Bosch products or products 
+                        from other brands purchased from other traders or manufacturers. Bosch does not intend to follow, in any way, 
+                        the prices of any product. 
+                        The invoice is required only for the simple proof of purchasing those tools in order to provide the warranty to the end Customer. 
+                      </h3>
+                        <!-- Upload image -->
+                      <mat-form-field>
+                        <div class="row">
+                          <div class="col-md-3">
+                              <!-- Display files names -->
+                              <input matInput readonly name="name"/>
+                              <!-- Browse Button -->
+                              <button mat-raised-button color="primary">Browse File</button>
+                            <!-- Fetch selected filed on change -->
+                            <input type="file" id="uploadFile" (change)="uploadfile($event)" formControlName="warranty_files" multiple="multiple" accept="image/*"/>
+                          </div>
+                          <div class="col-md-3 figure" *ngFor="let url of urls let i=index">
+                            <div class="position-relative">
+                              <img [src]="url" class="img-thumbnail rounded shadow-sm">
+                              <button type="button" class="btn-close position-absolute top-0 end-0 p-2 btn btn-dark" title="{{i}}" (click)="remove_img(i)" aria-label="Close"></button>
+                              <div>{{fileAttr}}</div>
+                            </div>
+                          </div>
                         </div>
-                        <div class="col-md-2" *ngFor="let url of urls let i=index">
-                          <figure class="figure">
-                            <img [src]="url" (click)="remove_img(i)" class="figure-img img-fluid rounded">
-                          </figure>
-                        </div>
-                      </div>
-                    </mat-form-field>
-                        <!-- <input type="file" id="upload" name="upload" multiple (change)="uploadfile($event)"> -->
-                        <!-- <img *ngFor="let url of urls let i=index" [src]="url" [title]="i+1" width="200px" (click)="remove_img(i)"> -->
-                  </div>
-                  <!-- Out of Warranty -->
-                  <div *ngIf="repair_type === 'Out of Warranty'">
-                    <h3>If the repair costs do not exceed HRK 30.00, the repair will be carried out immediately. 
-                      Please indicate the cost limit up to which the repair should be carried out without consultation if the repair costs exceed HRK 30.00.</h3>
-                    <h1>Cost Limit</h1>
-                    <div class="col-md-4">
-                      <!-- Cost Limit -->
-                      <mat-form-field class="w-100 mb-2">
-                        <mat-label>Cost Limit</mat-label>
-                        <input matInput type="number" formControlName="cost_limit" placeholder="Cost Limit" class="example-right-align" required>
                       </mat-form-field>
+                          <!-- <input type="file" id="upload" name="upload" multiple (change)="uploadfile($event)"> -->
+                          <!-- <img *ngFor="let url of urls let i=index" [src]="url" [title]="i+1" width="200px" (click)="remove_img(i)"> -->
                     </div>
-                    <mat-list role="list">
-                      <mat-list-item role="listitem">
-                        1. Only the actual repair costs will be charged. 
-                        If the repair costs exceed the cost limit, you will receive a cost estimate. 
-                        Only if you decide to return your unrepaired and dismantled device will we charge a processing fee of HRK 30.00 including shipping costs. 
-                        If you would like us to dispose of your device, we will charge a processing fee of HRK 30.00.
-                      </mat-list-item><br>
-                      <mat-list-item role="listitem">
-                        2. Payment is made by invoice.
-                      </mat-list-item>
-                      <mat-list-item role="listitem">
-                        3. For further information and conditions, please refer to the current price list and our service conditions.
-                      </mat-list-item>
-                      <mat-list-item role="listitem">
-                        4. All prices include VAT.
-                      </mat-list-item>
-                    </mat-list>
+                    <!-- Out of Warranty -->
+                    <div *ngIf="repair_type === 'Out of Warranty'">
+                      <h3>If the repair costs do not exceed HRK 30.00, the repair will be carried out immediately. 
+                        Please indicate the cost limit up to which the repair should be carried out without consultation if the repair costs exceed HRK 30.00.</h3>
+                      <h1>Cost Limit</h1>
+                      <div class="col-md-4">
+                        <!-- Cost Limit -->
+                        <mat-form-field class="w-100 mb-2">
+                          <mat-label>Cost Limit</mat-label>
+                          <input matInput type="number" formControlName="cost_limit" placeholder="Cost Limit" class="example-right-align">
+                        </mat-form-field>
+                      </div>
+                      <mat-list role="list">
+                        <mat-list-item role="listitem">
+                          1. Only the actual repair costs will be charged. 
+                          If the repair costs exceed the cost limit, you will receive a cost estimate. 
+                          Only if you decide to return your unrepaired and dismantled device will we charge a processing fee of HRK 30.00 including shipping costs. 
+                          If you would like us to dispose of your device, we will charge a processing fee of HRK 30.00.
+                        </mat-list-item><br>
+                        <mat-list-item role="listitem">
+                          2. Payment is made by invoice.
+                        </mat-list-item>
+                        <mat-list-item role="listitem">
+                          3. For further information and conditions, please refer to the current price list and our service conditions.
+                        </mat-list-item>
+                        <mat-list-item role="listitem">
+                          4. All prices include VAT.
+                        </mat-list-item>
+                      </mat-list>
+                    </div>
                   </div>
                 </div>
-              </div>
-
-            </mat-expansion-panel>
-            
+                
+              </mat-expansion-panel>
+            </div>
           </div>
         </mat-accordion>
         <!-- Bottom -->
         <div>
-          <button mat-raised-button color="primary" class="mt-1 mb-3 add_another_tool" (click)="add_product()"><mat-icon class="me-3">add</mat-icon><span>Add another tool</span></button>
+          <button mat-raised-button color="primary" class="mt-1 mb-3 add_another_tool" (click)="add_product()" *ngIf="roform.controls.products.controls.length <= 2"><mat-icon class="me-3">add</mat-icon><span>Add another tool</span></button>
           <h3>
             You can apply for the repair of up to three tools this time. You can click "Add another tool" to input other tool information, 
             but they need to be of the same service type. If all are warranty or paid repairs, we can create up to three tools for you. Different repair orders.
@@ -270,7 +241,7 @@
               <!-- First and Last name -->
               <mat-form-field class="w-100 mb-3">
                 <mat-label>First and Last name</mat-label>
-                <input matInput type="text" formControlName="first_last_name" placeholder="First and Last name" class="example-right-align" #flname minlength="3" maxlength="25" required>
+                <input matInput type="text" formControlName="first_last_name" placeholder="First and Last name" class="example-right-align" #flname minlength="3" maxlength="25">
                 <mat-hint>Min 3 and Max 25 charaters only</mat-hint>
                 <mat-hint align="end">{{flname.value?.length || 0}}/25</mat-hint>
               </mat-form-field>
@@ -279,7 +250,7 @@
               <!-- Mobile number -->
               <mat-form-field class="w-100 mb-3">
                 <mat-label>Mobile number</mat-label>
-                <input matInput type="number" formControlName="mobile_number" placeholder="Mobile number" class="example-right-align" #mn required>
+                <input matInput type="number" formControlName="mobile_number" placeholder="Mobile number" class="example-right-align" #mn>
                 <mat-hint>Min 10 and Max 10 numbers only</mat-hint>
                 <mat-hint align="end">{{mn.value?.length || 0}}/10</mat-hint>
               </mat-form-field>
@@ -288,7 +259,7 @@
               <!-- E-mail address -->
               <mat-form-field class="w-100 mb-3">
                 <mat-label>E-mail address</mat-label>
-                <input matInput type="text" formControlName="email_address" placeholder="E-mail address" class="example-right-align" #ea minlength="5" maxlength="25" required>
+                <input matInput type="text" formControlName="email_address" placeholder="E-mail address" class="example-right-align" #ea minlength="5" maxlength="25">
                 <mat-hint>Min 5 and Max 25 charaters only</mat-hint>
                 <mat-hint align="end">{{ea.value?.length || 0}}/25</mat-hint>
               </mat-form-field>
@@ -328,7 +299,7 @@
               <!-- Town name -->
               <mat-form-field class="w-100 mb-3">
                 <mat-label>Town name</mat-label>
-                <input matInput type="text" formControlName="town_name" placeholder="Town name" class="example-right-align" #twn minlength="3" maxlength="25" required>
+                <input matInput type="text" formControlName="town_name" placeholder="Town name" class="example-right-align" #twn minlength="3" maxlength="25">
                 <mat-hint>Min 3 and Max 25 charaters only</mat-hint>
                 <mat-hint align="end">{{twn.value?.length || 0}}/25</mat-hint>
               </mat-form-field>
@@ -337,7 +308,7 @@
               <!-- Street name -->
               <mat-form-field class="w-100 mb-3">
                 <mat-label>Street name</mat-label>
-                <input matInput type="text" formControlName="street_name" placeholder="Street name" class="example-right-align" #stn minlength="3" maxlength="25" required>
+                <input matInput type="text" formControlName="street_name" placeholder="Street name" class="example-right-align" #stn minlength="3" maxlength="25">
                 <mat-hint>Min 3 and Max 25 charaters only</mat-hint>
                 <mat-hint align="end">{{stn.value?.length || 0}}/25</mat-hint>
               </mat-form-field>
@@ -346,7 +317,7 @@
               <!-- House number -->
               <mat-form-field class="w-100 mb-3">
                 <mat-label>House number</mat-label>
-                <input matInput type="number" formControlName="house_number" placeholder="House number" class="example-right-align" #hn minlength="10" maxlength="25" required>
+                <input matInput type="number" formControlName="house_number" placeholder="House number" class="example-right-align" #hn minlength="10" maxlength="25">
                 <mat-hint>Min 10 and Max 25 numbers only</mat-hint>
                 <mat-hint align="end">{{hn.value?.length || 0}}/25</mat-hint>
               </mat-form-field>
@@ -355,7 +326,7 @@
               <!-- Postal Code -->
               <mat-form-field class="w-100 mb-3">
                 <mat-label>Postal Code</mat-label>
-                <input matInput type="number" formControlName="postal_code" placeholder="Postal Code" class="example-right-align" #pc minlength="10" maxlength="25" required>
+                <input matInput type="number" formControlName="postal_code" placeholder="Postal Code" class="example-right-align" #pc minlength="10" maxlength="25">
                 <mat-hint>Min 10 and Max 25 numbers only</mat-hint>
                 <mat-hint align="end">{{pc.value?.length || 0}}/25</mat-hint>
               </mat-form-field>
@@ -410,65 +381,75 @@
         <mat-card class="mt-4">
           <h1>Product Details</h1>
           <mat-accordion>
-            <div *ngFor="let prod of roform.controls.products['controls'] | slice:0:3; let i=index;" [formGroupName]="i">
-              <!-- Product 1 -->
-              <mat-expansion-panel class="mb-4" expanded="true">
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    Product {{i+1}}:
-                  </mat-panel-title>
-                  <mat-panel-description class="d-flex justify-content-end">
-                  </mat-panel-description>
-                </mat-expansion-panel-header>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="table-responsive">
-                      <table class="table table-hover">
-                        <tbody>
-                          <tr>
-                            <td>Tool Type Number</td>
-                            <td>{{roform.value.products[i].tool_type_number}}</td>
-                          </tr>
-                          <tr>
-                            <td>Tool Name</td>
-                            <td>{{roform.value.products[i].tool_name}}</td>
-                          <tr>
-                            <td>Serial Number</td>
-                            <td>{{roform.value.products[i].serial_number}}</td>
-                          </tr>
-                          <tr>
-                            <td>Description/Faults</td>
-                            <td>{{roform.value.products[i].description}}</td>
-                          </tr>
-                        </tbody>
-                      </table>
+            <div formArrayName="products">
+              <div *ngFor="let prod of roform.controls.products['controls'] let i=index;" [formGroupName]="i">
+                <!-- Product 1 -->
+                <mat-expansion-panel class="mb-4" expanded="true">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      Product {{i+1}}
+                    </mat-panel-title>
+                    <mat-panel-description class="d-flex justify-content-end">
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="table-responsive">
+                        <table class="table table-hover">
+                          <tbody>
+                            <tr>
+                              <td>Tool Type Number</td>
+                              <td>{{roform.value.products[i].tool_type_number}}</td>
+                            </tr>
+                            <tr>
+                              <td>Tool Name</td>
+                              <td>{{roform.value.products[i].tool_name}}</td>
+                            <tr>
+                              <td>Serial Number</td>
+                              <td>{{roform.value.products[i].serial_number}}</td>
+                            </tr>
+                            <tr>
+                              <td>Description/Faults</td>
+                              <td>{{roform.value.products[i].description}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="table-responsive">
+                        <table class="table table-hover">
+                          <tbody>
+                            <tr>
+                              <td>Accessories?</td>
+                              <td>{{roform.value.products[i].acc_condition}}</td>
+                            </tr>
+                            <tr>
+                              <td>Accessories</td>
+                              <td>
+                                <p>{{roform.value.products[i].myaccessories.case}} : {{roform.value.products[i].myaccessories.case_quantity}}</p>,
+                                <p>{{roform.value.products[i].myaccessories.battery}} : {{roform.value.products[i].myaccessories.battery_quantity}}</p>,
+                                <p>{{roform.value.products[i].myaccessories.charger}} : {{roform.value.products[i].myaccessories.charger_quantity}}</p>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Repair Type</td>
+                              <td>{{roform.value.products[i].repair_type}}</td>
+                            <tr *ngIf="roform.value.products[i].repair_type === 'Out of Warranty'">
+                              <td>Cost Limit</td>
+                              <td>{{roform.value.products[i].cost_limit}}</td>
+                            </tr>
+                            <tr *ngIf="roform.value.products[i].repair_type === 'Warranty'">
+                              <td>Images</td>
+                              <td>{{roform.value.products[i].warranty_files}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
-                  <div class="col-md-6">
-                    <div class="table-responsive">
-                      <table class="table table-hover">
-                        <tbody>
-                          <tr>
-                            <td>Accessories?</td>
-                            <td>{{roform.value.products[i].acc_condition}}</td>
-                          </tr>
-                          <tr>
-                            <td>Accessories</td>
-                            <td>{{roform.value.products[i].myaccessories}}</td>
-                          </tr>
-                          <tr>
-                            <td>Repair Type</td>
-                            <td>{{roform.value.products[i].repair_type}}</td>
-                          <tr>
-                            <td>Cost Limit</td>
-                            <td>{{roform.value.products[i].cost_limit}}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </mat-expansion-panel>
+                </mat-expansion-panel>
+              </div>
             </div>
           </mat-accordion>
           <h1 class="mt-3">Personal Details</h1>
