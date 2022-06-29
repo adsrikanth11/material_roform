@@ -19,7 +19,7 @@
         <!-- Body -->
         <mat-accordion>
           <div formArrayName="products">
-            <div *ngFor="let prod of roform.controls.products['controls'] let i=index;" [formGroupName]="i">
+            <div *ngFor="let prod of roform.controls.products.controls let i=index;" [formGroupName]="i">
               <mat-expansion-panel class="my-4">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
@@ -36,6 +36,7 @@
                       <mat-label>Tool Type Number</mat-label>
                       <input matInput type="number" placeholder="Tool Type Number" formControlName="tool_type_number" class="example-right-align">
                     </mat-form-field>
+
                     <!-- Tool Name -->
                     <mat-form-field class="w-100 mb-3">
                       <mat-label>Tool Name</mat-label>
@@ -83,51 +84,40 @@
   
                 <div>
                   <h1 class="mat-display">Would you like to send the accessories?</h1>
-                  <mat-radio-group aria-label="Select an option" color="primary" formControlName="acc_condition" [(ngModel)]="acc_conditions">
+                  <mat-radio-group aria-label="Select an option" color="primary" formControlName="acc_condition">
                     <mat-radio-button class="example-radio-button mx-2" value="Yes" name="acc_condition">Yes</mat-radio-button>
                     <mat-radio-button class="example-radio-button mx-2" value="No" name="acc_condition">No</mat-radio-button>
                   </mat-radio-group>
-                  <div *ngIf="acc_conditions === 'Yes'">
-                    <div class="row mt-4 ms-2" formArrayName="myaccessories">
-                      <!-- <div *ngFor="let prod of roform.controls.products.controls.myaccessories let i=index;" [formGroupName]="i"> -->
-                        <div class="col-md-2">
-                          <mat-checkbox formControlName="case" #case color="primary" class="me-3 mb-3">Case</mat-checkbox>
-                          <mat-form-field *ngIf="case.checked" class="w-100 mb-2">
-                            <mat-label>Case Quantity</mat-label>
-                            <input matInput type="number" placeholder="Quantity" formControlName="case_quantity">
-                          </mat-form-field>
+                  <!-- {{roform.value.products[i].acc_condition}} -->
+                  <div *ngIf="roform.value.products[i].acc_condition === 'Yes'">
+                    <div formArrayName="myaccessories">
+                      <div class="row mt-3 ms-2">
+                        <div *ngFor="let acc of prod['controls'].myaccessories['controls'] let ii=index" [formGroupName]="ii">
+                          <div class="col-md-2">
+                            <mat-checkbox color="primary" class="me-3 mb-3" [checked]="roform.value.products[i].myaccessories[ii].check">{{roform.value.products[i].myaccessories[ii].name}}</mat-checkbox>
+                            <mat-form-field *ngIf="roform.value.products[i].myaccessories[ii].check" class="w-100">
+                              <mat-label>Quantity</mat-label>
+                              <input matInput type="number">
+                            </mat-form-field>
+                          </div>
                         </div>
-                        <div class="col-md-2">
-                          <mat-checkbox formControlName="battery" #battery color="primary" class="me-3 mb-3">Battery</mat-checkbox>
-                          <mat-form-field *ngIf="battery.checked" class="w-100 mb-2">
-                            <mat-label>Battery Quantity</mat-label>
-                            <input matInput type="number" placeholder="Quantity" formControlName="battery_quantity">
-                          </mat-form-field>
-                        </div>
-                        <div class="col-md-2">
-                          <mat-checkbox formControlName="charger" #charger color="primary" class="mb-3">Charger</mat-checkbox>
-                          <mat-form-field *ngIf="charger.checked" class="w-100 mb-2">
-                            <mat-label>Charger Quantity</mat-label>
-                            <input matInput type="number" placeholder="Quantity" formControlName="charger_quantity">
-                          </mat-form-field>
-                        </div>
-                      <!-- </div> -->
+                      </div>
                     </div>
                   </div>
                 </div>
                 
-                <mat-divider></mat-divider>
-    
+                <mat-divider class="mt-4"></mat-divider>
+
                 <div class="row mt-4">
                   <h1 class="mat-display">Enter repair type of your tool</h1>
                   <h3>Specify the typeof your order.</h3>
-                  <mat-radio-group aria-label="Select an option" color="primary" formControlName="repair_type" [(ngModel)]="repair_type">
+                  <mat-radio-group aria-label="Select an option" color="primary" formControlName="repair_type">
                     <mat-radio-button class="example-radio-button mx-2" value="Warranty">Warranty</mat-radio-button>
                     <mat-radio-button class="example-radio-button mx-2" value="Out of Warranty">Out of Warranty</mat-radio-button>
                   </mat-radio-group>
                   <div class="mt-4">
                     <!-- Warranty -->
-                    <div *ngIf="repair_type === 'Warranty'">
+                    <div *ngIf="roform.value.products[i].repair_type === 'Warranty'">
                       <h3>
                         Repairs in case of a warranty claim are free of charge. 
                         In addition to the warranty conditions the Robert Bosch Power Tools GmbH service conditions apply.
@@ -172,7 +162,7 @@
                           <!-- <img *ngFor="let url of urls let i=index" [src]="url" [title]="i+1" width="200px" (click)="remove_img(i)"> -->
                     </div>
                     <!-- Out of Warranty -->
-                    <div *ngIf="repair_type === 'Out of Warranty'">
+                    <div *ngIf="roform.value.products[i].repair_type === 'Out of Warranty'">
                       <h3>If the repair costs do not exceed HRK 30.00, the repair will be carried out immediately. 
                         Please indicate the cost limit up to which the repair should be carried out without consultation if the repair costs exceed HRK 30.00.</h3>
                       <h1>Cost Limit</h1>
@@ -217,7 +207,8 @@
           </h3>
         </div>
         <mat-divider></mat-divider>
-        <div class="mt-3 me-5 d-flex justify-content-end">
+        <div class="mt-3 me-5 d-flex justify-content-evenly">
+          <div></div>
           <button mat-raised-button color="primary" type="button" matStepperNext>Next</button>
         </div>
       </mat-step>
@@ -369,7 +360,7 @@
           </div>
           <mat-divider></mat-divider>
           <!-- Bottom -->
-          <div class="mt-3 d-flex justify-content-between">
+          <div class="mt-3 d-flex justify-content-evenly">
             <button mat-raised-button color="primary" type="button" matStepperPrevious>Back</button>
             <button mat-raised-button color="primary" type="button" matStepperNext>Next</button>
           </div>
@@ -424,12 +415,14 @@
                               <td>Accessories?</td>
                               <td>{{roform.value.products[i].acc_condition}}</td>
                             </tr>
-                            <tr>
+                            <tr *ngIf="roform.value.products[i].acc_condition === 'Yes'">
                               <td>Accessories</td>
                               <td>
-                                <p>{{roform.value.products[i].myaccessories.case}} : {{roform.value.products[i].myaccessories.case_quantity}}</p>,
-                                <p>{{roform.value.products[i].myaccessories.battery}} : {{roform.value.products[i].myaccessories.battery_quantity}}</p>,
-                                <p>{{roform.value.products[i].myaccessories.charger}} : {{roform.value.products[i].myaccessories.charger_quantity}}</p>
+                                <mat-chip-list aria-label="Dog selection">
+                                  <mat-chip *ngFor="let acc of prod['controls'].myaccessories['controls'] let ii=index" [formGroupName]="ii">
+                                    {{roform.value.products[i].myaccessories[ii].name}} : {{roform.value.products[i].myaccessories[ii].quantity}}
+                                  </mat-chip>
+                                </mat-chip-list>
                               </td>
                             </tr>
                             <tr>
@@ -550,9 +543,9 @@
               </div>
             </div>
           </div>
-          <mat-divider class="mt-5"></mat-divider>
+          <mat-divider class="mt-1"></mat-divider>
           <!-- Bottom -->
-          <div class="mt-3 d-flex justify-content-between">
+          <div class="mt-3 d-flex justify-content-evenly">
             <button mat-raised-button color="primary" type="button" matStepperPrevious>Back</button>
             <button mat-raised-button color="primary" type="reset" (click)="stepper.reset()">Reset</button>
             <button mat-raised-button color="primary" type="submit" matStepperNext>Next</button>
@@ -562,7 +555,22 @@
       <!-- Step 4 -->
       <mat-step>
         <ng-template matStepLabel>Done</ng-template>
-        <!-- <p class="mb-5">You are now done.</p> -->
+        <mat-card class="mt-4">
+          <div class="p-3">
+            <h1 class="text-center text-success"><b>THANK YOU FOR YOUR REPAIR ORDER</b></h1>
+            <hr>
+            <h2>Your reference number : 2206093205</h2>
+            <p>Your device will usuallu returned within 3 - 5 days.</p>
+            <p>Your PDF with your repair order will be sent to email address you provided. 
+              You will also receive your special parcel label for an overview of your details about the desired collection dateand the collection address in the email.</p>
+          </div>
+          <mat-divider class="mt-1"></mat-divider>
+          <!-- Bottom -->
+          <div class="mt-3 d-flex justify-content-evenly">
+            <button mat-raised-button color="primary" type="button" (click)="stepper.reset()">Home</button>
+            <button mat-raised-button color="primary" type="button" (click)="stepper.reset()" matStepperNext>Create another order</button>
+          </div>
+        </mat-card>
         {{roform.value | json}}
       </mat-step>
     </mat-stepper>

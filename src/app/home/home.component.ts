@@ -15,11 +15,26 @@ export class HomeComponent implements OnInit {
   roform: any = FormGroup;
   panelOpenState = true;
   acc_conditions: string = 'No';
-  myaccessory: string = '';
-  // accessories = ['', 'case', 'battery', 'charger'];
-  // case: boolean = false;
-  // battery: boolean = false;
-  // charger: boolean = false;
+  myaccessory = [
+    {
+      name: ['case'],
+      check: [true],
+      quantity_name: ['case_quantity'],
+      quantity: [1]
+    },
+    {
+      name: ['battery'],
+      check: [false],
+      quantity_name: ['battery_quantity'],
+      quantity: [2]
+    },
+    {
+      name: ['charger'],
+      check: [true],
+      quantity_name: ['charger_quantity'],
+      quantity: [3]
+    },
+  ]
   repair_type: string = 'Out of Warranty';
   logistic_provider: string = 'GLS';
   urls: any = [];
@@ -60,7 +75,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.roform = this.fb.group({
-      title: [''],
+      title: ['', Validators.required],
       first_last_name: [''],
       mobile_number: [],
       email_address: [''],
@@ -78,58 +93,72 @@ export class HomeComponent implements OnInit {
       data_protection_notice: [],
       products: this.fb.array([
         this.fb.group({
-          'tool_type_number': [''],
-          'tool_name': [''],
-          'serial_number': [''],
-          'description': [''],
-          'acc_condition': [''],
-          'myaccessories': this.fb.array([
+          tool_type_number: ['', Validators.required],
+          tool_name: [''],
+          serial_number: [''],
+          description: [''],
+          acc_condition: ['No'],
+          myaccessories: this.fb.array([
             this.fb.group({
-              'case': '',
-              'case_quantity': ''
+              name: ['case'],
+              check: [true],
+              quantity_name: ['case_quantity'],
+              quantity: []
             }),
             this.fb.group({
-              'battery': '',
-              'battery_quantity': ''
+              name: ['battery'],
+              check: [true],
+              quantity_name: ['battery_quantity'],
+              quantity: []
             }),
             this.fb.group({
-              'charger': '',
-              'charger_quantity': ''
+              name: ['charger'],
+              check: [true],
+              quantity_name: ['charger_quantity'],
+              quantity: []
             }),
           ]),
-          'repair_type': [''],
-          'cost_limit': [''],
-          'warranty_files': []
+          repair_type: ['Out of Warranty'],
+          cost_limit: [],
+          warranty_files: []
         })
       ])
     });
+    console.log(this.roform);
   }
 
   add_product() {
     let products_array = this.roform.get('products') as FormArray;
     let add_product = this.fb.group({
-      'tool_type_number': '',
-      'tool_name': '',
-      'serial_number': '',
-      'description': '',
-      'acc_condition': '',
-      'myaccessories': [
-        {
-          'case': '',
-          'case_quantity': ''
-        },
-        {
-          'battery': '',
-          'battery_quantity': ''
-        },
-        {
-          'charger': '',
-          'charger_quantity': ''
-        },
-      ],
-      'repair_type': '',
-      'cost_limit': ''
-    })
+        tool_type_number: [''],
+        tool_name: [''],
+        serial_number: [''],
+        description: [''],
+        acc_condition: ['No'],
+        myaccessories: this.fb.array([
+          this.fb.group({
+            name: ['case'],
+            check: [true],
+            quantity_name: ['case_quantity'],
+            quantity: ['11']
+          }),
+          this.fb.group({
+            name: ['battery'],
+            check: [true],
+            quantity_name: ['battery_quantity'],
+            quantity: ['22']
+          }),
+          this.fb.group({
+            name: ['charger'],
+            check: [true],
+            quantity_name: ['charger_quantity'],
+            quantity: ['33']
+          }),
+        ]),
+        repair_type: ['Out of Warranty'],
+        cost_limit: [''],
+        warranty_files: []
+      })
     products_array.push(add_product);
   }
 
