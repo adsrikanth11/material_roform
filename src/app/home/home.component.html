@@ -36,7 +36,6 @@
                       <mat-label>Tool Type Number</mat-label>
                       <input matInput type="number" placeholder="Tool Type Number" formControlName="tool_type_number" class="example-right-align">
                     </mat-form-field>
-
                     <!-- Tool Name -->
                     <mat-form-field class="w-100 mb-3">
                       <mat-label>Tool Name</mat-label>
@@ -90,18 +89,22 @@
                   </mat-radio-group>
                   <!-- {{roform.value.products[i].acc_condition}} -->
                   <div *ngIf="roform.value.products[i].acc_condition === 'Yes'">
-                    <div formArrayName="myaccessories">
-                      <div class="row mt-3 ms-2">
-                        <div *ngFor="let acc of prod['controls'].myaccessories['controls'] let ii=index" [formGroupName]="ii">
-                          <div class="col-md-2">
-                            <mat-checkbox color="primary" class="me-3 mb-3" [checked]="roform.value.products[i].myaccessories[ii].check">{{roform.value.products[i].myaccessories[ii].name}}</mat-checkbox>
-                            <mat-form-field *ngIf="roform.value.products[i].myaccessories[ii].check" class="w-100">
-                              <mat-label>Quantity</mat-label>
-                              <input matInput type="number">
-                            </mat-form-field>
-                          </div>
-                        </div>
-                      </div>
+                    <div class="row mt-3 ms-2" formArrayName="myaccessories">
+                     <div class="col-md-2" *ngFor="let acc of roform.controls.products.controls[i].controls.myaccessories.controls; let ii=index;" [formGroupName]="ii">
+                        <mat-checkbox color="primary" formControlName="{{acc.value.acc_name}}" class="me-3 mb-3">{{acc.value.acc_name}}</mat-checkbox>
+                        <mat-form-field class="w-100" *ngIf="roform.value.products[i].myaccessories[ii].case">
+                           <mat-label>{{acc.value.acc_name +' quantity'}}</mat-label>
+                           <input matInput type="number" formControlName="{{acc.value.quantity_name}}">
+                        </mat-form-field>
+                        <mat-form-field class="w-100" *ngIf="roform.value.products[i].myaccessories[ii].battery">
+                           <mat-label>{{acc.value.acc_name +' quantity'}}</mat-label>
+                           <input matInput type="number" formControlName="{{acc.value.quantity_name}}">
+                        </mat-form-field>
+                        <mat-form-field class="w-100" *ngIf="roform.value.products[i].myaccessories[ii].charger">
+                           <mat-label>{{acc.value.acc_name +' quantity'}}</mat-label>
+                           <input matInput type="number" formControlName="{{acc.value.quantity_name}}">
+                        </mat-form-field>
+                     </div>
                     </div>
                   </div>
                 </div>
@@ -325,12 +328,12 @@
             <mat-divider class="mt-2 mb-4"></mat-divider>
             <h1>SELECT YOUR DELIVERY OPTION</h1>
             <H3>Select logistic provider</H3>
-            <mat-radio-group aria-label="Select an option" color="primary" formControlName="logistic_provider" [(ngModel)]="logistic_provider">
+            <mat-radio-group aria-label="Select an option" color="primary" formControlName="logistic_provider">
               <mat-radio-button class="example-radio-button mx-2 mb-4" value="GLS"> GLS </mat-radio-button>
               <mat-radio-button class="example-radio-button mx-2 mb-4" value="DPD"> DPD </mat-radio-button>
             </mat-radio-group>
             <div class="col-sm-6 col-md-3">
-              <div *ngIf="logistic_provider === 'GLS'">
+              <div *ngIf="roform.value.logistic_provider === 'GLS'">
                 <mat-form-field>
                   <mat-label>Select pick-up date</mat-label>
                   <input matInput [matDatepicker]="picker" formControlName="gls_pickup_date">
@@ -339,7 +342,7 @@
                   <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
               </div>
-              <div *ngIf="logistic_provider === 'DPD'">
+              <div *ngIf="roform.value.logistic_provider === 'DPD'">
                 <mat-form-field>
                   <mat-label>Select pick-up date</mat-label>
                   <input matInput [matDatepicker]="picker" formControlName="dpd_pickup_date">
@@ -419,8 +422,17 @@
                               <td>Accessories</td>
                               <td>
                                 <mat-chip-list aria-label="Dog selection">
-                                  <mat-chip *ngFor="let acc of prod['controls'].myaccessories['controls'] let ii=index" [formGroupName]="ii">
-                                    {{roform.value.products[i].myaccessories[ii].name}} : {{roform.value.products[i].myaccessories[ii].quantity}}
+                                  <mat-chip *ngFor="let acc of roform.controls.products.controls[i].controls.myaccessories.controls; let ii=index;" [formGroupName]="ii">
+                                    {{acc.value.acc_name}} :  
+                                    <div *ngIf="roform.value.products[i].myaccessories[ii].case">
+                                       {{acc.value.case_quantity}}
+                                    </div>
+                                    <div *ngIf="roform.value.products[i].myaccessories[ii].battery">
+                                       {{acc.value.battery_quantity}}
+                                    </div>
+                                    <div *ngIf="roform.value.products[i].myaccessories[ii].charger">
+                                       {{acc.value.charger_quantity}}
+                                    </div>
                                   </mat-chip>
                                 </mat-chip-list>
                               </td>

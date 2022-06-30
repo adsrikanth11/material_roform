@@ -13,30 +13,6 @@ import {map} from 'rxjs/operators';
 export class HomeComponent implements OnInit {
 
   roform: any = FormGroup;
-  panelOpenState = true;
-  acc_conditions: string = 'No';
-  myaccessory = [
-    {
-      name: ['case'],
-      check: [true],
-      quantity_name: ['case_quantity'],
-      quantity: [1]
-    },
-    {
-      name: ['battery'],
-      check: [false],
-      quantity_name: ['battery_quantity'],
-      quantity: [2]
-    },
-    {
-      name: ['charger'],
-      check: [true],
-      quantity_name: ['charger_quantity'],
-      quantity: [3]
-    },
-  ]
-  repair_type: string = 'Out of Warranty';
-  logistic_provider: string = 'GLS';
   urls: any = [];
   @ViewChild('fileInput')
   fileInput!: ElementRef;
@@ -75,7 +51,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.roform = this.fb.group({
-      title: ['', Validators.required],
+      title: [''],
       first_last_name: [''],
       mobile_number: [],
       email_address: [''],
@@ -86,36 +62,36 @@ export class HomeComponent implements OnInit {
       street_name: [''],
       house_number: [],
       postal_code: [],
-      logistic_provider: [''],
+      logistic_provider: ['GLS'],
       gls_pickup_date: [],
       dpd_pickup_date: [],
       terms_conditions: [],
       data_protection_notice: [],
       products: this.fb.array([
         this.fb.group({
-          tool_type_number: ['', Validators.required],
+          tool_type_number: [''],
           tool_name: [''],
           serial_number: [''],
           description: [''],
           acc_condition: ['No'],
           myaccessories: this.fb.array([
             this.fb.group({
-              name: ['case'],
-              check: [true],
+              acc_name: ['case'],
+              case: [false],
               quantity_name: ['case_quantity'],
-              quantity: []
+              case_quantity: [],
             }),
             this.fb.group({
-              name: ['battery'],
-              check: [true],
+              acc_name: ['battery'],
+              battery: [false],
               quantity_name: ['battery_quantity'],
-              quantity: []
+              battery_quantity: [],
             }),
             this.fb.group({
-              name: ['charger'],
-              check: [true],
+              acc_name: ['charger'],
+              charger: [false],
               quantity_name: ['charger_quantity'],
-              quantity: []
+              charger_quantity: [],
             }),
           ]),
           repair_type: ['Out of Warranty'],
@@ -130,36 +106,40 @@ export class HomeComponent implements OnInit {
   add_product() {
     let products_array = this.roform.get('products') as FormArray;
     let add_product = this.fb.group({
-        tool_type_number: [''],
-        tool_name: [''],
-        serial_number: [''],
-        description: [''],
-        acc_condition: ['No'],
-        myaccessories: this.fb.array([
-          this.fb.group({
-            name: ['case'],
-            check: [true],
-            quantity_name: ['case_quantity'],
-            quantity: ['11']
-          }),
-          this.fb.group({
-            name: ['battery'],
-            check: [true],
-            quantity_name: ['battery_quantity'],
-            quantity: ['22']
-          }),
-          this.fb.group({
-            name: ['charger'],
-            check: [true],
-            quantity_name: ['charger_quantity'],
-            quantity: ['33']
-          }),
-        ]),
-        repair_type: ['Out of Warranty'],
-        cost_limit: [''],
-        warranty_files: []
-      })
+      tool_type_number: [''],
+      tool_name: [''],
+      serial_number: [''],
+      description: [''],
+      acc_condition: ['No'],
+      myaccessories: this.fb.array([
+        this.fb.group({
+          acc_name: ['case'],
+          case: [false],
+          quantity_name: ['case_quantity'],
+          case_quantity: [],
+        }),
+        this.fb.group({
+          acc_name: ['battery'],
+          battery: [false],
+          quantity_name: ['battery_quantity'],
+          battery_quantity: [],
+        }),
+        this.fb.group({
+          acc_name: ['charger'],
+          charger: [false],
+          quantity_name: ['charger_quantity'],
+          charger_quantity: [],
+        }),
+      ]),
+      repair_type: ['Out of Warranty'],
+      cost_limit: [],
+      warranty_files: []
+    })
     products_array.push(add_product);
+  }
+
+  myacc(e: any) {
+    console.log(e);
   }
 
   del_product(i: any) {
