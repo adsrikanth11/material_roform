@@ -13,34 +13,11 @@ import {map} from 'rxjs/operators';
 export class HomeComponent implements OnInit {
 
   roform: any = FormGroup;
-  urls: any = [];
-  @ViewChild('fileInput')
-  fileInput!: ElementRef;
-  fileAttr = 'Choose File';
-  uploadFileEvt(imgFile: any) {
-    if (imgFile.target.files && imgFile.target.files[0]) {
-      // this.fileAttr = '';
-      // Array.from(imgFile.target.files).forEach((file: any) => {
-      //   this.fileAttr += file.name + ' - ';
-      // });
-      // HTML5 FileReader API
-      let reader = new FileReader();
-      reader.onload = (e: any) => {
-        let image = new Image();
-        image.src = e.target.result;
-        this.urls.push(e.target.result);
-        image.onload = (rs) => {
-          let imgBase64Path = e.target.result;
-        };
-      };
-      reader.readAsDataURL(imgFile.target.files[0]);
-      // Reset if duplicate image uploaded again
-      this.fileInput.nativeElement.value = '';
-    } else {
-      // this.fileAttr = 'Choose File';
-    }
-  }
-  
+  preview_img: string[] = [];
+  upload_img: string[] = [];
+  files_length: any = 0;
+  file_name: string[] = [];
+
   stepperOrientation: Observable<StepperOrientation>;
 
   constructor(private fb: FormBuilder, breakpointObserver: BreakpointObserver) {
@@ -69,7 +46,7 @@ export class HomeComponent implements OnInit {
       data_protection_notice: [],
       products: this.fb.array([
         this.fb.group({
-          tool_type_number: [''],
+          tool_type_number: ['', Validators.required],
           tool_name: [''],
           serial_number: [''],
           description: [''],
@@ -96,17 +73,65 @@ export class HomeComponent implements OnInit {
           ]),
           repair_type: ['Out of Warranty'],
           cost_limit: [],
+          preview_img: [],
           warranty_files: []
         })
       ])
     });
-    console.log(this.roform);
+    // console.log(this.roform);
+  }
+
+  get f(){
+    return this.roform.controls.products.controls;
+  }
+
+  onFileChange(event:any) {
+    if (event.target.files && event.target.files[0]) {
+      let file_type = event.target.files[0].type;
+      // Check file type
+      if(file_type === 'image/jpeg' || file_type === 'image/png' || file_type === 'image/gif' || file_type === 'application/pdf') {
+        Array.from(event.target.files).forEach((file: any) => {
+          // Upload images
+          this.upload_img.push(file.name);
+          this.file_name.push(file.name);
+          this.files_length = this.upload_img.length;
+          this.roform.patchValue({
+            products: [{
+              warranty_files: this.upload_img
+            }]
+          });
+        });
+        // Preview images
+        for (let i = 0; i < event.target.files.length; i++) {
+          var reader = new FileReader();
+          reader.onload = (event:any) => {
+            this.preview_img.push(event.target.result);
+          }
+          reader.readAsDataURL(event.target.files[i]);
+        }
+      } else {
+        alert('upload only jpg, png, gif, pdf only');
+      }
+    } else {
+      alert('files/images are required');
+    }
+  }
+
+  del_img(img: any) {
+    this.preview_img.splice(img, 1);
+    this.roform.patchValue({
+      products: [{
+        warranty_files: this.upload_img
+      }]
+    });
+    this.roform.controls.products.controls.warranty_files.splice(img, 1);
+    console.log(this.roform.value.products);
   }
 
   add_product() {
     let products_array = this.roform.get('products') as FormArray;
     let add_product = this.fb.group({
-      tool_type_number: [''],
+      tool_type_number: ['', Validators.required],
       tool_name: [''],
       serial_number: [''],
       description: [''],
@@ -133,13 +158,10 @@ export class HomeComponent implements OnInit {
       ]),
       repair_type: ['Out of Warranty'],
       cost_limit: [],
+      preview_img: [],
       warranty_files: []
     })
     products_array.push(add_product);
-  }
-
-  myacc(e: any) {
-    console.log(e);
   }
 
   del_product(i: any) {
@@ -147,38 +169,8 @@ export class HomeComponent implements OnInit {
     products_array.removeAt(i);
   }
 
-  uploadfile(event: any) {
-    if (event.target.files && event.target.files[0]) {
-      const files = event.target.files;
-      this.fileAttr = '';
-      Array.from(event.target.files).forEach((file: any) => {
-        this.fileAttr += file.name;
-        let products_array = this.roform.products.get('warranty_files') as FormArray;
-        products_array.push(file.name);
-      });
-      for (let index = 0; index < files.length; index++) {
-        const element = files[index];
-        // console.log(element.name);
-        // this.fileAttr += element.name;
-        let reader = new FileReader();
-
-        reader.readAsDataURL(files[index]);
-
-        reader.onload = (e: any) => {
-          this.urls.push(e.target.result);
-        }
-      }
-    } else {
-      this.fileAttr = 'Choose file';
-    }
-  }
-
-  remove_img(url: any) {
-    this.urls.splice(url);
-  }
-
   Submit_Roform() {
-    console.log(this.roform.value);
+    console.log(this.roform.value.products);
   }
 
   resetform() {

@@ -87,10 +87,9 @@
                     <mat-radio-button class="example-radio-button mx-2" value="Yes" name="acc_condition">Yes</mat-radio-button>
                     <mat-radio-button class="example-radio-button mx-2" value="No" name="acc_condition">No</mat-radio-button>
                   </mat-radio-group>
-                  <!-- {{roform.value.products[i].acc_condition}} -->
-                  <div *ngIf="roform.value.products[i].acc_condition === 'Yes'">
+                  <div *ngIf="prod.controls.acc_condition.value === 'Yes'">
                     <div class="row mt-3 ms-2" formArrayName="myaccessories">
-                     <div class="col-md-2" *ngFor="let acc of roform.controls.products.controls[i].controls.myaccessories.controls; let ii=index;" [formGroupName]="ii">
+                     <div class="col-md-2" *ngFor="let acc of prod.controls.myaccessories.controls; let ii=index;" [formGroupName]="ii">
                         <mat-checkbox color="primary" formControlName="{{acc.value.acc_name}}" class="me-3 mb-3">{{acc.value.acc_name}}</mat-checkbox>
                         <mat-form-field class="w-100" *ngIf="roform.value.products[i].myaccessories[ii].case">
                            <mat-label>{{acc.value.acc_name +' quantity'}}</mat-label>
@@ -142,27 +141,23 @@
                         The invoice is required only for the simple proof of purchasing those tools in order to provide the warranty to the end Customer. 
                       </h3>
                         <!-- Upload image -->
-                      <mat-form-field>
-                        <div class="row">
+                        <div class="row g-2 my-3">
                           <div class="col-md-3">
-                              <!-- Display files names -->
-                              <input matInput readonly name="name"/>
-                              <!-- Browse Button -->
-                              <button mat-raised-button color="primary">Browse File</button>
-                            <!-- Fetch selected filed on change -->
-                            <input type="file" id="uploadFile" (change)="uploadfile($event)" formControlName="warranty_files" multiple="multiple" accept="image/*"/>
+                            <input type="file" (change)="onFileChange($event)" formControlName="preview_img" multiple *ngIf="files_length <= 2">
+                            <!-- <div class="col-md-3">
+                                <div *ngIf="f.file.touched && f.file.invalid" class="alert alert-danger">
+                                    <div *ngIf="f.file.errors && f.file.errors.required">File is required.</div>
+                                </div>
+                            </div> -->
                           </div>
-                          <div class="col-md-3 figure" *ngFor="let url of urls let i=index">
+                          <div class="col-md-3" *ngFor='let url of preview_img; let i = index'>
                             <div class="position-relative">
                               <img [src]="url" class="img-thumbnail rounded shadow-sm">
-                              <button type="button" class="btn-close position-absolute top-0 end-0 p-2 btn btn-dark" title="{{i}}" (click)="remove_img(i)" aria-label="Close"></button>
-                              <div>{{fileAttr}}</div>
+                              <button type="button" class="btn-close position-absolute top-0 end-0 p-3 mt-1 me-1 btn btn-dark text-white" (click)="del_img(url)"></button>
+                              {{file_name[i]}}
                             </div>
                           </div>
                         </div>
-                      </mat-form-field>
-                          <!-- <input type="file" id="upload" name="upload" multiple (change)="uploadfile($event)"> -->
-                          <!-- <img *ngFor="let url of urls let i=index" [src]="url" [title]="i+1" width="200px" (click)="remove_img(i)"> -->
                     </div>
                     <!-- Out of Warranty -->
                     <div *ngIf="roform.value.products[i].repair_type === 'Out of Warranty'">
@@ -377,7 +372,7 @@
           <mat-accordion>
             <div formArrayName="products">
               <div *ngFor="let prod of roform.controls.products['controls'] let i=index;" [formGroupName]="i">
-                <!-- Product 1 -->
+                <!-- Products -->
                 <mat-expansion-panel class="mb-4" expanded="true">
                   <mat-expansion-panel-header>
                     <mat-panel-title>
@@ -421,18 +416,33 @@
                             <tr *ngIf="roform.value.products[i].acc_condition === 'Yes'">
                               <td>Accessories</td>
                               <td>
-                                <mat-chip-list aria-label="Dog selection">
+                                <mat-chip-list aria-label="Accessories selection">
                                   <mat-chip *ngFor="let acc of roform.controls.products.controls[i].controls.myaccessories.controls; let ii=index;" [formGroupName]="ii">
-                                    {{acc.value.acc_name}} :  
-                                    <div *ngIf="roform.value.products[i].myaccessories[ii].case">
-                                       {{acc.value.case_quantity}}
+                                    <div class="d-flex justify-content-between" *ngIf="roform.value.products[i].myaccessories[ii].case === true || acc.value.case_quantity > 0">
+                                       <span>
+                                          {{acc.value.acc_name}} :   
+                                       </span>
+                                       <span *ngIf="roform.value.products[i].myaccessories[ii].case">
+                                          {{acc.value.case_quantity}}
+                                       </span>
                                     </div>
-                                    <div *ngIf="roform.value.products[i].myaccessories[ii].battery">
-                                       {{acc.value.battery_quantity}}
+                                    <div class="d-flex justify-content-between" *ngIf="roform.value.products[i].myaccessories[ii].battery === true || acc.value.battery_quantity > 0">
+                                       <span>
+                                          {{acc.value.acc_name}} :   
+                                       </span>
+                                       <span *ngIf="roform.value.products[i].myaccessories[ii].battery">
+                                          {{acc.value.battery_quantity}}
+                                       </span>
                                     </div>
-                                    <div *ngIf="roform.value.products[i].myaccessories[ii].charger">
-                                       {{acc.value.charger_quantity}}
+                                    <div class="d-flex justify-content-between" *ngIf="roform.value.products[i].myaccessories[ii].charger === true || acc.value.charger_quantity > 0">
+                                       <span>
+                                          {{acc.value.acc_name}} :   
+                                       </span>
+                                       <span *ngIf="roform.value.products[i].myaccessories[ii].charger">
+                                          {{acc.value.charger_quantity}}
+                                       </span>
                                     </div>
+                                    
                                   </mat-chip>
                                 </mat-chip-list>
                               </td>
@@ -446,7 +456,11 @@
                             </tr>
                             <tr *ngIf="roform.value.products[i].repair_type === 'Warranty'">
                               <td>Images</td>
-                              <td>{{roform.value.products[i].warranty_files}}</td>
+                              <td class="d-flex justify-content-between">
+                                <div *ngFor='let url of preview_img' class="me-1">
+                                  <img [src]="url" class="img-thumbnail rounded shadow-sm" width="200px">
+                                </div>
+                              </td>
                             </tr>
                           </tbody>
                         </table>
@@ -560,7 +574,7 @@
           <div class="mt-3 d-flex justify-content-evenly">
             <button mat-raised-button color="primary" type="button" matStepperPrevious>Back</button>
             <button mat-raised-button color="primary" type="reset" (click)="stepper.reset()">Reset</button>
-            <button mat-raised-button color="primary" type="submit" matStepperNext>Next</button>
+            <button mat-raised-button color="primary" type="submit" matStepperNext>Submit</button>
           </div>
         </mat-card>
       </mat-step>
