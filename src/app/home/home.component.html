@@ -140,24 +140,25 @@
                         the prices of any product. 
                         The invoice is required only for the simple proof of purchasing those tools in order to provide the warranty to the end Customer. 
                       </h3>
-                        <!-- Upload image -->
-                        <div class="row g-2 my-3">
-                          <div class="col-md-3">
-                            <input type="file" (change)="onFileChange($event)" formControlName="preview_img" multiple *ngIf="files_length <= 2">
-                            <!-- <div class="col-md-3">
-                                <div *ngIf="f.file.touched && f.file.invalid" class="alert alert-danger">
-                                    <div *ngIf="f.file.errors && f.file.errors.required">File is required.</div>
-                                </div>
-                            </div> -->
-                          </div>
-                          <div class="col-md-3" *ngFor='let url of preview_img; let i = index'>
-                            <div class="position-relative">
-                              <img [src]="url" class="img-thumbnail rounded shadow-sm">
-                              <button type="button" class="btn-close position-absolute top-0 end-0 p-3 mt-1 me-1 btn btn-dark text-white" (click)="del_img(url)"></button>
-                              {{file_name[i]}}
-                            </div>
+                      <!-- Upload image -->
+                      <div class="row g-2 my-3">
+                        <div class="col-md-3">
+                          <input type="file" (change)="onFileChange($event)" formControlName="preview_img" multiple *ngIf="files_length <= 2">
+                          <!-- <div class="col-md-3">
+                              <div *ngIf="f.file.touched && f.file.invalid" class="alert alert-danger">
+                                  <div *ngIf="f.file.errors && f.file.errors.required">File is required.</div>
+                              </div>
+                          </div> -->
+                        </div>
+                        <div class="col-md-3" *ngFor="let img_url of preview_img | slice:0:3 let iii = index">
+                          <div class="position-relative">
+                            <img [src]="img_url" class="img-thumbnail rounded shadow-sm">
+                            <button type="button" class="btn-close position-absolute top-0 end-0 p-1 mt-1 me-1" (click)="del_img(file_name, file_name[iii], iii)"></button>
+                            <!-- {{file_name[iii]}} -->
+                            {{roform.value.products[i].warranty_files[iii]}}
                           </div>
                         </div>
+                      </div>
                     </div>
                     <!-- Out of Warranty -->
                     <div *ngIf="roform.value.products[i].repair_type === 'Out of Warranty'">
@@ -457,8 +458,9 @@
                             <tr *ngIf="roform.value.products[i].repair_type === 'Warranty'">
                               <td>Images</td>
                               <td class="d-flex justify-content-between">
-                                <div *ngFor='let url of preview_img' class="me-1">
+                                <div *ngFor="let url of preview_img | slice:0:3 let i=index">
                                   <img [src]="url" class="img-thumbnail rounded shadow-sm" width="200px">
+                                  <small>{{file_name[i]}}</small>
                                 </div>
                               </td>
                             </tr>
